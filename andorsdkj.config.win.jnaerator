@@ -1,0 +1,13 @@
+
+-library atcore
+#!-beautifyNames
+-f
+-o src\
+-rootPackage src
+-package andorsdkj.bindings
+-arch win64 
+-libFile lib\andorsdkj\atblkbx.dll lib\andorsdkj\atcl_bitflow.dll lib\andorsdkj\atcore.dll lib\andorsdkj\atdevapogee.dll lib\andorsdkj\atdevregcam.dll lib\andorsdkj\atusb_libusb.dll lib\andorsdkj\atusb_libusb10.dll lib\andorsdkj\atutility.dll lib\andorsdkj\clallserial.dll lib\andorsdkj\atdevsimcam.dll lib\andorsdkj\atmcd64d.dll lib\andorsdkj\atspooler.dll
+-runtime BridJ
+-mode Directory
+-dependencies atcore.dll,atblkbx.dll,atcl_bitflow.dll,atdevapogee.dll,atdevregcam.dll,atdevsimcam.dll,atspooler.dll,atusb_libusb.dll,atusb_libusb10.dll,atutility.dll,clallserial.dll,atmcd64d.dll
+lib\andorsdkj\atcore.h

@@ -1,0 +1,1 @@
+java.exe -jar ./tools/jnaerator.jar andorsdkj.config.win.jnaerator
