@@ -1,10 +1,10 @@
 package andorsdkj.bindings.demo;
 
 import org.bridj.BridJ;
-import savePNG.*;
 import org.bridj.Pointer;
 
 import andorsdkj.bindings.AtcoreLibrary;
+import andorsdkj.bindings.util.SavePNG;
 
 public class AcquisitionDemo {
 	
@@ -153,7 +153,8 @@ public class AcquisitionDemo {
 					// System.out.println("wait is " + wait);
 
 					if (AtcoreLibrary.AT_WaitBuffer(Hndl.getInt(), testPointer, BufferSize,
-							10000) == AtcoreLibrary.AT_SUCCESS) {
+							10000) == AtcoreLibrary.AT_SUCCESS) 
+					{
 						System.out.println("Acquisition finished successfuly");
 						System.out.println("Number bytes received " + ImageSizeBytes.getLong() + "\n");
 						System.out.println("Print out the first 20 pixels ");
@@ -295,7 +296,7 @@ public class AcquisitionDemo {
 						start = System.nanoTime();
 
 						UserBuffer.release();
-						savePNG.savePNG(arr, "C:\\Users\\myersadmin\\Documents\\images\\", "buffer.png");
+						SavePNG.savePNG(arr, "C:\\Users\\myersadmin\\Documents\\images\\", "buffer.png");
 						
 						end = System.nanoTime();
 						
