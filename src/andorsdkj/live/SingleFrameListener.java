@@ -1,4 +1,6 @@
-package andorsdkj;
+package andorsdkj.live;
+
+import andorsdkj.ImageBuffer;
 
 public interface SingleFrameListener
 {

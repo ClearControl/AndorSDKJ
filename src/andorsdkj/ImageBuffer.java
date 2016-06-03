@@ -9,6 +9,9 @@ public class ImageBuffer
 	private int mImageSizeInBytes;
 	
 	//TODO: add metadata parsing and bla bla..
+	
+	//TODO: keep two fileds for width and height (from meta data) + the additional 12 pixels for the width,
+	// Question: is it always 12 pixels for all ROI (x,y,width,height)
 
 	public ImageBuffer(Pointer<Byte> pPointer, int pImageSizeInBytes)
 	{

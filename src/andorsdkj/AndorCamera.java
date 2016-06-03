@@ -56,6 +56,17 @@ public class AndorCamera implements AutoCloseable
 		AndorSDKJUtils.setKeyValue(this, "PixelEncoding", "Mono12Packed");
 	}
 
+	public void set16PixelEncoding() throws AndorSdkJException
+	{
+		if (mDebugMessages)
+			System.out.println("AndorCamera: setting 16 bit pixel encoding for camera with index " + this.mCameraIndex);
+		
+		AndorSDKJUtils.setKeyValue(	this,
+																"SimplePreAmpGainControl",
+																"16-bit (low noise & high well capacity)");
+		AndorSDKJUtils.setKeyValue(this, "PixelEncoding", "Mono16");
+	}
+	
 	public void setTriggeringMode(TriggerMode pAndorTriggerMode) throws AndorSdkJException
 	{
 		if (mDebugMessages)
@@ -167,6 +178,8 @@ public class AndorCamera implements AutoCloseable
 	{
 		return mCameraHandlePointer.getInt();
 	}
+	
+	//TODO: add get/set width/height
 
 	@Override
 	public String toString()

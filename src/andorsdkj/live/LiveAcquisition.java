@@ -1,4 +1,4 @@
-package andorsdkj;
+package andorsdkj.live;
 
 import static org.junit.Assert.assertTrue;
 
@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import andorsdkj.AndorCamera;
+import andorsdkj.AndorSdkJException;
+import andorsdkj.ImageBuffer;
 import andorsdkj.bindings.AtcoreLibrary;
 
 public class LiveAcquisition

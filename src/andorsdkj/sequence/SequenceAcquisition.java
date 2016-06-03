@@ -1,4 +1,6 @@
-package andorsdkj;
+package andorsdkj.sequence;
+
+import andorsdkj.AndorCamera;
 
 public class SequenceAcquisition
 {

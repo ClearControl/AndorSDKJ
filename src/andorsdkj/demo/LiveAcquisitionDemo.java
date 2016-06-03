@@ -8,9 +8,9 @@ import org.junit.Test;
 import andorsdkj.AndorCamera;
 import andorsdkj.AndorSdkJ;
 import andorsdkj.AndorSdkJException;
-import andorsdkj.LiveAcquisition;
 import andorsdkj.enums.CycleMode;
 import andorsdkj.enums.ReadOutRate;
+import andorsdkj.live.LiveAcquisition;
 
 public class LiveAcquisitionDemo
 {
