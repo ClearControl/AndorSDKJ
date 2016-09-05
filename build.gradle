@@ -136,7 +136,7 @@ if(hasProperty('bintray_user') && hasProperty('bintray_key') )
 			websiteUrl = 'https://github.com/ClearControl/AndorSDKJ'
 			issueTrackerUrl = 'https://github.com/ClearControl/AndorSDKJ/issues'
 			vcsUrl = 'https://github.com/RTlib/ASDKJ.git'
-			//licenses = ['Apache-2.0']
+			licenses = ['Apache-2.0']
 			labels = [
 				'ClearControl',
 				'Andor',
