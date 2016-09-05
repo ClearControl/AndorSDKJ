@@ -1,14 +1,11 @@
 package andorsdkj.sequence;
 
 import java.util.ArrayList;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import andorsdkj.AndorCamera;
 import andorsdkj.AndorSdkJException;
-import andorsdkj.ImageBuffer;
 import andorsdkj.enums.CycleMode;
-import andorsdkj.live.SingleFrameListener;
 
 public class SequenceAcquisition implements AutoCloseable
 {
@@ -83,12 +80,14 @@ public class SequenceAcquisition implements AutoCloseable
 		}
 	}
 
+	@Override
 	public void close()
 	{
 		// TODO: is there anything that we have to release?
 		
 	}
 	
+	@Override
 	public String toString(){
 		return "Sequence Acqusition instance for the camera: " + mAndorCamera;
 	}

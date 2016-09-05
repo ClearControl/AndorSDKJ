@@ -4,7 +4,6 @@ import org.bridj.BridJ;
 import org.bridj.Pointer;
 
 import andorsdkj.bindings.AtcoreLibrary;
-import andorsdkj.bindings.util.SavePNG;
 
 public class AcquisitionDemoLowLevel {
 	

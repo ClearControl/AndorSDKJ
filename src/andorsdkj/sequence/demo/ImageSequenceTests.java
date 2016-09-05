@@ -16,7 +16,7 @@ public class ImageSequenceTests {
 		
 		int lImageSizeInBytes = lHeight*lWidth*lDepth*8;
 	
-		ImageSequence lImageSequence = new ImageSequence(lImageSizeInBytes, lHeight, lWidth, lDepth);
+		ImageSequence lImageSequence = new ImageSequence(lImageSizeInBytes, lWidth, lHeight, lDepth);
 		
 		System.out.println("ImageSequence created:\n" + lImageSequence);
 		

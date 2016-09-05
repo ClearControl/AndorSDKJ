@@ -3,7 +3,6 @@ import java.util.Random;
 //import java.awt.image.BufferedImage;
 import java.awt.image.*;
 import javax.imageio.*;
-import java.lang.*;
 import java.io.*;
 
 

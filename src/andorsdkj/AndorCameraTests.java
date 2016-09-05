@@ -5,11 +5,8 @@ import java.util.concurrent.TimeUnit;
 import org.bridj.Pointer;
 import org.junit.Test;
 
-import com.sun.org.apache.bcel.internal.generic.LAND;
-
 import andorsdkj.enums.CycleMode;
 import andorsdkj.enums.TriggerMode;
-import andorsdkj.sequence.SequenceAcquisition;
 
 public class AndorCameraTests
 {

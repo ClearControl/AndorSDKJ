@@ -3,13 +3,10 @@ package andorsdkj.bindings.demoLowLevel;
 import static org.junit.Assert.assertTrue;
 
 import org.bridj.Pointer;
-import org.bridj.demangling.Demangler.PointerTypeRef;
 import org.junit.Test;
 
 import andorsdkj.ImageBuffer;
 import andorsdkj.bindings.AtcoreLibrary;
-import static andorsdkj.bindings.util.SavePNG.savePNG;
-import static andorsdkj.bindings.util.Buffer16ToArray.toArray;
 
 public class AndorSdkJTestsLowLevel
 {
@@ -177,7 +174,7 @@ public class AndorSdkJTestsLowLevel
 		lReturnCode =
 								AtcoreLibrary.AT_QueueBuffer(	lCameraHandle.getInt(),
 																							lUserBuffer,
-																							(int) (lImageSizeBytes.getInt()));
+																							(lImageSizeBytes.getInt()));
 		assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
 
 		// Start Chrono:

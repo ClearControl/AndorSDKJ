@@ -1,9 +1,5 @@
 package andorsdkj;
 
-import static org.junit.Assert.assertTrue;
-
-import org.bridj.Pointer;
-
 import andorsdkj.bindings.AtcoreLibrary;
 import andorsdkj.util.AndorSDKJUtils;
 

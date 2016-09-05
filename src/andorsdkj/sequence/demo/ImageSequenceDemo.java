@@ -2,9 +2,7 @@ package andorsdkj.sequence.demo;
 
 import static andorsdkj.bindings.util.Buffer16ToArray.toArray;
 import static andorsdkj.bindings.util.SavePNG.savePNG;
-import static centom.CenterOfMass.com;
 import static org.junit.Assert.assertTrue;
-import static thresholding.Threshold.createMask;
 
 import java.util.concurrent.TimeUnit;
 
@@ -14,10 +12,7 @@ import andorsdkj.AndorCamera;
 import andorsdkj.AndorSdkJ;
 import andorsdkj.AndorSdkJException;
 import andorsdkj.ImageBuffer;
-import andorsdkj.bindings.util.ArrayAndMax;
-import andorsdkj.enums.CycleMode;
 import andorsdkj.enums.ReadOutRate;
-import andorsdkj.live.LiveAcquisition;
 import andorsdkj.sequence.ImageSequence;
 import andorsdkj.sequence.SequenceAcquisition;
 

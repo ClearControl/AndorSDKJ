@@ -1,5 +1,4 @@
 package andorsdkj.bindings.util;
-import java.util.Arrays;
 
 public class ArrayAndMax
 {

@@ -1,7 +1,5 @@
 package andorsdkj;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
