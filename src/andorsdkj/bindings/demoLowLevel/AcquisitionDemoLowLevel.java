@@ -1,4 +1,4 @@
-package andorsdkj.bindings.demo;
+package andorsdkj.bindings.demoLowLevel;
 
 import org.bridj.BridJ;
 import org.bridj.Pointer;
@@ -6,7 +6,7 @@ import org.bridj.Pointer;
 import andorsdkj.bindings.AtcoreLibrary;
 import andorsdkj.bindings.util.SavePNG;
 
-public class AcquisitionDemo {
+public class AcquisitionDemoLowLevel {
 	
 	private static int toUns(Byte a) {
 		int ret = 0;
@@ -296,7 +296,7 @@ public class AcquisitionDemo {
 						start = System.nanoTime();
 
 						UserBuffer.release();
-						SavePNG.savePNG(arr, "C:\\Users\\myersadmin\\Documents\\images\\", "buffer.png");
+					//	SavePNG.savePNG(arr, "C:\\Users\\myersadmin\\Documents\\images\\", "buffer.png");
 						
 						end = System.nanoTime();
 						

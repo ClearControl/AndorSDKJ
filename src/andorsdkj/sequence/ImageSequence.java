@@ -25,7 +25,7 @@ public class ImageSequence {
 	 * @param pDepth
 	 *            - number of images in the sequence
 	 */
-	public ImageSequence(int pImageSizeinBytes, long pHeight, long pWidth, long pDepth) {
+	public ImageSequence(int pImageSizeinBytes, long pWidth, long pHeight, long pDepth) {
 		super();
 
 		// initializing dimensions
@@ -70,11 +70,11 @@ public class ImageSequence {
 
 	public ImageSequence(int pImageSizeinBytes, long pHeight, long pWidth, long pDepth, Pointer<Byte> pBufferPointer) {
 		super();
-		
-		if (pBufferPointer.getValidBytes() < pDepth*pImageSizeinBytes){
+
+		if (pBufferPointer.getValidBytes() < pDepth * pImageSizeinBytes) {
 			throw new java.lang.IllegalArgumentException("Provided pointer doesn't have enough valid bytes to store the image sequence.");
 		}
-		
+
 		// initializing dimension
 		this.mDepth = pDepth;
 		this.mWidth = pWidth;

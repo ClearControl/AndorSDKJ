@@ -31,7 +31,7 @@ public class LiveAcquisitionDemo
 			
 			lAndorZyla.setExposureTimeInSeconds(0.1);
 			lAndorZyla.setReadoutRate(ReadOutRate._100_MHz);
-			lAndorZyla.setCycleMode(CycleMode.Continuous);
+			lAndorZyla.setCycleMode(CycleMode.CONTINUOUS);
 			lAndorZyla.allocateAndQueueBuffers(1);
 						
 			// TODO: @Alex: add setWidthHeight and getWidth and getHeight for camera

@@ -10,17 +10,12 @@ import andorsdkj.util.AndorSDKJUtils;
 public class AndorSdkJ implements AutoCloseable
 {
 
+	private volatile boolean isInitialized;
 	public AndorSdkJ() throws AndorSdkJException
 	{
 		super();
 
-		int lReturnCode = AtcoreLibrary.AT_InitialiseLibrary();
-		//System.out.println(lReturnCode);
-		if (lReturnCode != AtcoreLibrary.AT_SUCCESS)
-		{
-			throw new AndorSdkJException("Cannot initialize "
-																		+ this.getClass().getName());
-		}
+		isInitialized = false;
 
 	}
 
@@ -36,10 +31,16 @@ public class AndorSdkJ implements AutoCloseable
 	}
 
 	@Override
-	public void close() throws Exception
+	public void close() throws AndorSdkJException
 	{
 		AndorSDKJUtils.handleErrorWithException("Error while finalizing AndorSDK library",
 																						AtcoreLibrary.AT_FinaliseLibrary());
+	}
+	
+	public void open() throws AndorSdkJException
+	{
+		AndorSDKJUtils.handleErrorWithException("Error while initializing AndorSDK library",
+																						AtcoreLibrary.AT_InitialiseLibrary());
 	}
 
 }

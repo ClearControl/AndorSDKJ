@@ -1,4 +1,4 @@
-package andorsdkj.bindings.demo;
+package andorsdkj.bindings.demoLowLevel;
 
 import static org.junit.Assert.assertTrue;
 
@@ -6,10 +6,12 @@ import org.bridj.Pointer;
 import org.bridj.demangling.Demangler.PointerTypeRef;
 import org.junit.Test;
 
+import andorsdkj.ImageBuffer;
 import andorsdkj.bindings.AtcoreLibrary;
-import andorsdkj.bindings.util.SavePNG;
+import static andorsdkj.bindings.util.SavePNG.savePNG;
+import static andorsdkj.bindings.util.Buffer16ToArray.toArray;
 
-public class AndorSdkJTests
+public class AndorSdkJTestsLowLevel
 {
 
 	// Assumption: there is at least one real camera connected.
@@ -379,6 +381,9 @@ public class AndorSdkJTests
 			System.out.println("First three bytes of the image " + i + " are: " + lBuffer.get().getByte() + 
 																									 " " + lBuffer.get().offset(1).get() + 
 																									 " " + lBuffer.get().offset(2).get());
+			System.out.println("Buffer specs: buffer pointer ---> " + lBuffer.getPointer(Byte.class) + " VB: " + lBuffer.getPointer(Byte.class).getValidBytes());
+			ImageBuffer ib = new ImageBuffer(lBuffer.get(), lBufferSize.get());
+	//		savePNG(ib, "C:\\Users\\myersadmin\\images\\", "buffer_test.png");
 			
 			
 			// Returning the buffer			
@@ -771,5 +776,52 @@ public class AndorSdkJTests
 			System.out.println(" Done!");
 	}
 	
-
+	@Test
+	public void testFullAOIControlAvailability() throws InterruptedException {
+		
+			// Initializing the library...
+			System.out.print("Initializing the  library... ");
+			int lReturnCode = AtcoreLibrary.AT_InitialiseLibrary();
+			System.out.print("Return code: " + lReturnCode);
+			assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
+			System.out.println(" Done!");
+			
+			// Identifying the number of devices
+			System.out.print("Identifying the number of devices... ");
+			Pointer<Long> lNumberDevices = Pointer.allocateLong();
+			Pointer<Character> fDeviceCount = Pointer.pointerToWideCString("DeviceCount");
+			lReturnCode = AtcoreLibrary.AT_GetInt(AtcoreLibrary.AT_HANDLE_SYSTEM, fDeviceCount, lNumberDevices);
+			System.out.print("Return code: " + lReturnCode + ". # of devices is: " + lNumberDevices.getInt());
+			assertTrue(lNumberDevices.getLong() > 2);
+			System.out.println(" Done! Number of devices: " + lNumberDevices.getLong());
+			
+			// Initializing the camera, creating a handle
+			System.out.print("Initializing the camera... ");
+			Pointer<Integer> lCameraHandle = Pointer.allocateInt();
+			lReturnCode = AtcoreLibrary.AT_Open(0, lCameraHandle);
+			System.out.print("Return code: " + lReturnCode);
+			assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
+			System.out.println(" Done!");
+			
+			// Identifying the availability of FullAOICOntrol
+			System.out.print("Identifying the number of devices... ");
+			Pointer<Character> fFullAOI = Pointer.pointerToWideCString("FullAOIControl");
+			Pointer<Integer> wtf = Pointer.allocateInt();
+			lReturnCode = AtcoreLibrary.AT_GetBool(lCameraHandle.getInt(), fFullAOI, wtf); 
+			System.out.print("wtf is: " + wtf.getInt());						
+					
+			// Closing and finalizing
+			System.out.print("Closing the camera... ");
+			lReturnCode = AtcoreLibrary.AT_Close(lCameraHandle.getInt());
+			System.out.print("Return code: " + lReturnCode);
+			assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
+			System.out.println(" Done!");
+			
+			System.out.print("Finalizing the library... ");
+			lReturnCode = AtcoreLibrary.AT_FinaliseLibrary();
+			System.out.print("Return code: " + lReturnCode);
+			assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
+			System.out.println(" Done!");
+	}
+	
 }

@@ -9,7 +9,7 @@ import java.io.*;
 
 public class SavePNG {
     
-    public static void savePNG(long[][] buff, String path, String name) {
+    public static void savePNG(int[][] buff, String path, String name) {
         /* --- funtion to build and save a .png from an int array --- */
         
         
@@ -31,7 +31,7 @@ public class SavePNG {
         }
         
         // check
-        System.out.println("height is: " + height + " width is : " + width);
+        System.out.println("SavePNG: height is: " + height + " width is : " + width);
         
         // creating a buffered image
         BufferedImage im = new BufferedImage(width, height, BufferedImage.TYPE_USHORT_GRAY);
@@ -78,7 +78,7 @@ public class SavePNG {
         
         int width = 1280;
         int height = 500;
-        long[][] arr = new long[height][width];
+        int[][] arr = new int[height][width];
              
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {

@@ -6,3 +6,5 @@ build/
 .gradle
 *.class
 .DS_Store
+/nbproject/private/
+/nbbuild/

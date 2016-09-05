@@ -2,6 +2,7 @@ package andorsdkj;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import org.bridj.Pointer;
@@ -17,19 +18,22 @@ public class AndorCamera implements AutoCloseable
 	private int mCameraIndex;
 	private Pointer<Integer> mCameraHandlePointer;
 	public static boolean mDebugMessages = true;
+	private ArrayList<ImageBuffer> lImageBufferArray;
 
-	AndorCamera(int pCameraIndex) throws AndorSdkJException
+	public AndorCamera(int pCameraIndex) throws AndorSdkJException
 	{
 		if (mDebugMessages)
 			System.out.println("AndorCamera: Opening an Andor camera with index: " + pCameraIndex);
 		
 		mCameraIndex = pCameraIndex;
 		mCameraHandlePointer = Pointer.allocateInt();
+		lImageBufferArray = new ArrayList<>();
 
 		AndorSDKJUtils.handleErrorWithException("Cannot open camera for index "
 																						+ pCameraIndex,
 																						AtcoreLibrary.AT_Open(pCameraIndex,
 																																	mCameraHandlePointer));
+		AndorSDKJUtils.handleErrorWithException("Flushing in construction", AtcoreLibrary.AT_Flush(mCameraHandlePointer.getInt()));
 	}
 
 	@Override
@@ -37,9 +41,9 @@ public class AndorCamera implements AutoCloseable
 	{
 		
 		if (mDebugMessages)
-			System.out.println("AndorCamera: Closing the Andor camera with index: " + this.mCameraIndex);
+			System.out.println("AndorCamera: emptying buffers and closing the Andor camera with index: " + this.mCameraIndex);
 		
-		
+		this.flushBuffers();
 		AndorSDKJUtils.handleErrorWithException("Error while closing camera "
 																						+ mCameraIndex,
 																						AtcoreLibrary.AT_Close(mCameraHandlePointer.getInt()));
@@ -71,20 +75,43 @@ public class AndorCamera implements AutoCloseable
 	{
 		if (mDebugMessages)
 			System.out.println("AndorCamera: setting triggering mode to: " + pAndorTriggerMode.name() +" for the camera with index: " + this.mCameraIndex);
-		
+		String str = pAndorTriggerMode.toString().substring(0, 1) + pAndorTriggerMode.toString().substring(1).toLowerCase();
 		AndorSDKJUtils.setKeyValue(	this,
 																"TriggerMode",
-																pAndorTriggerMode.name());
+																str);
 	}
 
+	public void setFrameCount(int pNumberOfImages) throws AndorSdkJException
+	{
+		if (mDebugMessages)
+			System.out.println("AndorCamera: setting FrameCount to: " + pNumberOfImages +" for the camera with index " + this.mCameraIndex);
+		
+		
+	//	System.out.println("---> from setCycleMode ---> mode is: " + str);
+		AndorSDKJUtils.setInt(	this,
+																"FrameCount",
+																pNumberOfImages);
+	}
+	
+	public void SoftwareTrigger() throws AndorSdkJException
+	{
+		if (mDebugMessages)
+			System.out.println("AndorCamera: software trigger for the camera with index: " + this.mCameraIndex);
+		
+		AndorSDKJUtils.setCommand(this, "SoftwareTrigger"); 
+	}
+
+	
 	public void setCycleMode(CycleMode pAndorCycleMode) throws AndorSdkJException
 	{
 		if (mDebugMessages)
 			System.out.println("AndorCamera: setting the cycling mode to: " + pAndorCycleMode.name() +" for the camera with index " + this.mCameraIndex);
 		
+		String str = pAndorCycleMode.toString().substring(0, 1) + pAndorCycleMode.toString().substring(1).toLowerCase();
+	//	System.out.println("---> from setCycleMode ---> mode is: " + str);
 		AndorSDKJUtils.setKeyValue(	this,
 																"CycleMode",
-																pAndorCycleMode.name());
+																str);
 	}
 
 	public void setExposureTimeInSeconds(double pExposureTimeSeconds) throws AndorSdkJException
@@ -147,6 +174,18 @@ public class AndorCamera implements AutoCloseable
 																						getImageSizeInBytes(),
 																						pNumberOfBuffers);
 	}
+	
+	public void allocateAndQueueAlignedBuffers(int pNumberOfBuffers) throws AndorSdkJException
+	{
+		if (mDebugMessages)
+			System.out.println("AndorCamera: allocating and queueing _" + pNumberOfBuffers + "_ of buffers for the camera with index: " + this.mCameraIndex);
+		
+		
+		
+		AndorSDKJUtils.allocateAndQueueAlignedBuffers(	this,
+																						getImageSizeInBytes(),
+																						pNumberOfBuffers, lImageBufferArray);
+	}
 
 	public void enqueueBuffer(ImageBuffer pImageBuffer) throws AndorSdkJException
 	{
@@ -179,6 +218,14 @@ public class AndorCamera implements AutoCloseable
 		return mCameraHandlePointer.getInt();
 	}
 	
+	public void flushBuffers() throws AndorSdkJException
+	{
+		if (mDebugMessages)
+			System.out.println("Flushing buffers for the camera with index: " + this.mCameraIndex);
+		
+		AndorSDKJUtils.handleErrorWithException("Sth wrong with flushing buffers for the camera: " + this.mCameraIndex,  AtcoreLibrary.AT_Flush(this.getHandle()));
+	}
+	
 	//TODO: add get/set width/height
 
 	@Override
@@ -189,4 +236,65 @@ public class AndorCamera implements AutoCloseable
 													mCameraHandlePointer.get());
 	}
 
+	public void setFrameWidth(int pWidth) throws AndorSdkJException
+	{
+		if (mDebugMessages)
+			System.out.println("Setting image width for the Andor Camera " + this.mCameraIndex);
+		
+		AndorSDKJUtils.setInt(this, "AOIWidth", pWidth);
+		
+	}
+	
+	public void setFrameHeight(int pHeight) throws AndorSdkJException
+	{
+		if (mDebugMessages)
+			System.out.println("Setting image height for the Andor Camera " + this.mCameraIndex);
+		
+		AndorSDKJUtils.setInt(this, "AOIHeight", pHeight);
+		
+	}
+	
+	public void collectMetadata(boolean pFlag) throws AndorSdkJException
+	{
+		if (mDebugMessages)
+			System.out.println("Setting metadata to: " + pFlag + "for camera: " + this.mCameraIndex);
+			AndorSDKJUtils.setBool(this, "MetadataEnable", pFlag); 
+	}
+
+	public void collectTimestamp(boolean pFlag) throws AndorSdkJException
+	{
+		if (mDebugMessages)
+			System.out.println("Setting collectTimestep to: " + pFlag + "for camera: " + this.mCameraIndex);
+			AndorSDKJUtils.setBool(this, "MetadataTimestamp", pFlag); 
+	}
+	
+	public void collectFrameInfo(boolean pFlag) throws AndorSdkJException
+	{
+		if (mDebugMessages)
+			System.out.println("Setting collectFrameInfo to: " + pFlag + "for camera: " + this.mCameraIndex);
+			AndorSDKJUtils.setBool(this, "MetadataFrameInfo", pFlag); 
+	}
+
+	public int getTimestampClockFrequency() throws AndorSdkJException
+	{
+		if (mDebugMessages)
+			System.out.println("Getting TimestampClockFrequency for camera: " + this.mCameraIndex);
+			return AndorSDKJUtils.getInt(this, "TimestampClockFrequency");
+		
+	}
+
+	public int getStrideInPixels(int pBytesPerPixel) throws AndorSdkJException
+	{
+		return AndorSDKJUtils.getInt(this, "AOIStride")/pBytesPerPixel;
+	}
+
+	public int getFrameHeight() throws AndorSdkJException
+	{
+		return AndorSDKJUtils.getInt(this, "AOIHeight");
+	}
+	
+	public int getFrameWidth() throws AndorSdkJException
+	{
+		return AndorSDKJUtils.getInt(this, "AOIWidth");
+	}
 }

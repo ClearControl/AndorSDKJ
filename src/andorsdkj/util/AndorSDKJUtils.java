@@ -2,6 +2,7 @@ package andorsdkj.util;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import org.bridj.Pointer;
@@ -75,8 +76,38 @@ public class AndorSDKJUtils
 			System.out.println("Setting a float value: " + pValue + " for the camera: " + pAndorCamera + " for the feature " + pKey);
 		
 		Pointer<Character> lKeyPointer = Pointer.pointerToWideCString(pKey);
-		handleError("Cannot set float value for "+ pKey,
+		handleErrorWithException("Cannot set float value for "+ pKey,
 								AtcoreLibrary.AT_SetFloat(pAndorCamera.getHandle(),
+																					lKeyPointer,
+																					pValue));
+
+	}
+	
+	public static void setBool(AndorCamera pAndorCamera,
+															String pKey,
+															boolean pValue) throws AndorSdkJException
+	{
+		if (mDebugMessages)
+			System.out.println("Setting a boolean feature: " + pKey + " to the value: " + pValue + " for the camera: " + pAndorCamera);
+		
+		Pointer<Character> lKeyPointer = Pointer.pointerToWideCString(pKey);
+		handleErrorWithException("Cannot set float value for "+ pKey,
+								AtcoreLibrary.AT_SetBool(pAndorCamera.getHandle(),
+																					lKeyPointer,
+																					pValue ? 1:0));
+
+	}
+	
+	public static void setInt(AndorCamera pAndorCamera,
+															String pKey,
+															int pValue) throws AndorSdkJException
+	{
+		if (mDebugMessages)
+			System.out.println("Setting an int value: " + pValue + " for the camera: " + pAndorCamera + " for the feature " + pKey);
+		
+		Pointer<Character> lKeyPointer = Pointer.pointerToWideCString(pKey);
+		handleErrorWithException("Cannot set int value for "+ pKey,
+								AtcoreLibrary.AT_SetInt(pAndorCamera.getHandle(),
 																					lKeyPointer,
 																					pValue));
 
@@ -97,7 +128,7 @@ public class AndorSDKJUtils
 																					lKey,
 																					lValue,
 																					pAndorCamera);
-		handleError(lErrorMessage,
+		handleErrorWithException(lErrorMessage,
 								AtcoreLibrary.AT_SetEnumeratedString(	pAndorCamera.getHandle(),
 																											lKey,
 																											lValue));
@@ -114,7 +145,7 @@ public class AndorSDKJUtils
 
 		Pointer<Character> lCommandString =
 																			Pointer.pointerToWideCString(pCommandString);
-		handleErrorWithException("Cannot start acquisition for camera: "
+		handleErrorWithException("Cannot perfrom the command: " + pCommandString + " for the camera "
 															+ pAndorCamera.getHandle(),
 															AtcoreLibrary.AT_Command(	pAndorCamera.getHandle(),
 																												lCommandString));
@@ -143,20 +174,48 @@ public class AndorSDKJUtils
 		}
 
 	}
+	
+	public static void allocateAndQueueAlignedBuffers(	AndorCamera pAndorCamera,
+																							int pImageSizeBytes,
+																							int pNumberOfBuffers, ArrayList<ImageBuffer> BufferArray) throws AndorSdkJException
+	{
+		if (mDebugMessages)
+			System.out.println("Allocating and queueing _" + pNumberOfBuffers + "_ buffers for the camera " + pAndorCamera);
+		
+		if (pNumberOfBuffers <= 0)
+		{
+			throw new AndorSdkJException("Number of buffers cannot be negative.");
+		}
+		
+	//	BufferArray = new ArrayList<>();
+		
+		for (int i = 0; i < pNumberOfBuffers; i++)
+		{
+			allocateAndQueueAlignedBuffer(pAndorCamera, pImageSizeBytes, BufferArray);
+		}
+
+	}
+	
 
 	public static void allocateAndQueueAlignedBuffer(AndorCamera pAndorCamera,
-																										int pImageSizeBytes) throws AndorSdkJException
+																										int pImageSizeBytes, ArrayList<ImageBuffer> BufferArray) throws AndorSdkJException
 	{
 		
 		if (mDebugMessages)
-			System.out.println("Allocating and queueing analigned buffer for the camera " + pAndorCamera);
+			System.out.println("Allocating and queueing an aligned buffer for the camera " + pAndorCamera);
 		
 		Pointer<Byte> lDefineBuffer =
-																Pointer.allocateBytes(pImageSizeBytes);
+																Pointer.allocateBytes(pImageSizeBytes + 7);
 		// alignment
 		while (lDefineBuffer.getPeer() % 8 != 0)
+			System.out.println("pointer for buffer is: " + lDefineBuffer.getPeer());
 			lDefineBuffer = lDefineBuffer.offset(1);
-
+//		long initPeer = lDefineBuffer.getPeer();
+//		long finPeer = (initPeer + 7) & ~7;
+//		lDefineBuffer = lDefineBuffer.offset(finPeer - initPeer);
+		
+		
+		BufferArray.add(new ImageBuffer(lDefineBuffer, pImageSizeBytes));	
 		handleErrorWithException("Cannot queue a buffer for camera: "
 															+ pAndorCamera.getHandle(),
 															AtcoreLibrary.AT_QueueBuffer(	pAndorCamera.getHandle(),
@@ -169,7 +228,7 @@ public class AndorSDKJUtils
 																	int pImageSize) throws AndorSdkJException
 	{
 		if (mDebugMessages)
-			System.out.println("Allocating and queueing a buffer for the camera " + pAndorCamera);
+			System.out.println("Queueing a buffer for the camera " + pAndorCamera);
 		
 		handleErrorWithException("Cannot queue a buffer for camera: "
 															+ pAndorCamera.getHandle(),
@@ -210,16 +269,20 @@ public class AndorSDKJUtils
 		
 		Pointer<Pointer<Byte>> lPointerPointerBuffer = Pointer.allocatePointer(Byte.class);
 		Pointer<Integer> lPointerBufferSize = Pointer.allocateInt();
-
+		System.out.println("allocated pointers");
 		handleErrorWithException(	"Error in waiting buffer for camera: ",
 															AtcoreLibrary.AT_WaitBuffer(pAndorCamera.getHandle(),
 																													lPointerPointerBuffer,
 																													lPointerBufferSize,
 																													(int) TimeUnit.MILLISECONDS.convert(pTimeOut,
 																																															pTimeUnit)));
+		System.out.println("buffer acquired, proceeding to IB construction");
 
 		ImageBuffer lImageBuffer = new ImageBuffer(	lPointerPointerBuffer.get(),
 																								lPointerBufferSize.get());
+		System.out.println("checking the ImageBuffer construction inside the wait-for-buffer method ---> IB pointer: " + lImageBuffer.getPointer() + " pointer VB: " + lImageBuffer.getPointer().getValidBytes() + " image size: " + lImageBuffer.getImageSizeInBytes() );
+		
+	
 
 		lPointerPointerBuffer.release();
 		lPointerBufferSize.release();
