@@ -3,6 +3,7 @@ import org.bridj.BridJ;
 import org.bridj.CRuntime;
 import org.bridj.Callback;
 import org.bridj.Pointer;
+import org.bridj.ann.Convention.Style;
 import org.bridj.ann.Convention;
 import org.bridj.ann.Library;
 import org.bridj.ann.Ptr;
@@ -13,106 +14,106 @@ import org.bridj.ann.Runtime;
  * a tool written by <a href="http://ochafik.com/">Olivier Chafik</a> that <a href="http://code.google.com/p/jnaerator/wiki/CreditsAndLicense">uses a few opensource projects.</a>.<br>
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> or <a href="http://bridj.googlecode.com/">BridJ</a> .
  */
-@Library(value = "atcore.dll", dependencies = {"atcore.dll", "atblkbx.dll", "atcl_bitflow.dll", "atdevapogee.dll", "atdevregcam.dll", "atdevsimcam.dll", "atspooler.dll", "atusb_libusb.dll", "atusb_libusb10.dll", "atutility.dll", "clallserial.dll", "atmcd64d.dll"}) 
+@Library(value = "atcore", dependencies = {"atcore.dll", "atblkbx.dll", "atcl_bitflow.dll", "atdevapogee.dll", "atdevregcam.dll", "atdevsimcam.dll", "atspooler.dll", "atusb_libusb.dll", "atusb_libusb10.dll", "atutility.dll", "clallserial.dll", "atmcd64d.dll"}) 
 @Runtime(CRuntime.class) 
 public class AtcoreLibrary {
 	static {
 		BridJ.register();
 	}
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final long AT_INFINITE = 0xFFFFFFFFL;
+	public static final long AT_INFINITE = (long)0xFFFFFFFFL;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_CALLBACK_SUCCESS = 0;
+	public static final int AT_CALLBACK_SUCCESS = (int)0;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_TRUE = 1;
+	public static final int AT_TRUE = (int)1;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_FALSE = 0;
+	public static final int AT_FALSE = (int)0;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_SUCCESS = 0;
+	public static final int AT_SUCCESS = (int)0;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NOTINITIALISED = 1;
+	public static final int AT_ERR_NOTINITIALISED = (int)1;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NOTIMPLEMENTED = 2;
+	public static final int AT_ERR_NOTIMPLEMENTED = (int)2;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_READONLY = 3;
+	public static final int AT_ERR_READONLY = (int)3;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NOTREADABLE = 4;
+	public static final int AT_ERR_NOTREADABLE = (int)4;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NOTWRITABLE = 5;
+	public static final int AT_ERR_NOTWRITABLE = (int)5;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_OUTOFRANGE = 6;
+	public static final int AT_ERR_OUTOFRANGE = (int)6;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_INDEXNOTAVAILABLE = 7;
+	public static final int AT_ERR_INDEXNOTAVAILABLE = (int)7;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_INDEXNOTIMPLEMENTED = 8;
+	public static final int AT_ERR_INDEXNOTIMPLEMENTED = (int)8;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_EXCEEDEDMAXSTRINGLENGTH = 9;
+	public static final int AT_ERR_EXCEEDEDMAXSTRINGLENGTH = (int)9;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_CONNECTION = 10;
+	public static final int AT_ERR_CONNECTION = (int)10;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NODATA = 11;
+	public static final int AT_ERR_NODATA = (int)11;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_INVALIDHANDLE = 12;
+	public static final int AT_ERR_INVALIDHANDLE = (int)12;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_TIMEDOUT = 13;
+	public static final int AT_ERR_TIMEDOUT = (int)13;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_BUFFERFULL = 14;
+	public static final int AT_ERR_BUFFERFULL = (int)14;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_INVALIDSIZE = 15;
+	public static final int AT_ERR_INVALIDSIZE = (int)15;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_INVALIDALIGNMENT = 16;
+	public static final int AT_ERR_INVALIDALIGNMENT = (int)16;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_COMM = 17;
+	public static final int AT_ERR_COMM = (int)17;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_STRINGNOTAVAILABLE = 18;
+	public static final int AT_ERR_STRINGNOTAVAILABLE = (int)18;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_STRINGNOTIMPLEMENTED = 19;
+	public static final int AT_ERR_STRINGNOTIMPLEMENTED = (int)19;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NULL_FEATURE = 20;
+	public static final int AT_ERR_NULL_FEATURE = (int)20;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NULL_HANDLE = 21;
+	public static final int AT_ERR_NULL_HANDLE = (int)21;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NULL_IMPLEMENTED_VAR = 22;
+	public static final int AT_ERR_NULL_IMPLEMENTED_VAR = (int)22;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NULL_READABLE_VAR = 23;
+	public static final int AT_ERR_NULL_READABLE_VAR = (int)23;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NULL_READONLY_VAR = 24;
+	public static final int AT_ERR_NULL_READONLY_VAR = (int)24;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NULL_WRITABLE_VAR = 25;
+	public static final int AT_ERR_NULL_WRITABLE_VAR = (int)25;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NULL_MINVALUE = 26;
+	public static final int AT_ERR_NULL_MINVALUE = (int)26;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NULL_MAXVALUE = 27;
+	public static final int AT_ERR_NULL_MAXVALUE = (int)27;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NULL_VALUE = 28;
+	public static final int AT_ERR_NULL_VALUE = (int)28;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NULL_STRING = 29;
+	public static final int AT_ERR_NULL_STRING = (int)29;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NULL_COUNT_VAR = 30;
+	public static final int AT_ERR_NULL_COUNT_VAR = (int)30;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NULL_ISAVAILABLE_VAR = 31;
+	public static final int AT_ERR_NULL_ISAVAILABLE_VAR = (int)31;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NULL_MAXSTRINGLENGTH = 32;
+	public static final int AT_ERR_NULL_MAXSTRINGLENGTH = (int)32;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NULL_EVCALLBACK = 33;
+	public static final int AT_ERR_NULL_EVCALLBACK = (int)33;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NULL_QUEUE_PTR = 34;
+	public static final int AT_ERR_NULL_QUEUE_PTR = (int)34;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NULL_WAIT_PTR = 35;
+	public static final int AT_ERR_NULL_WAIT_PTR = (int)35;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NULL_PTRSIZE = 36;
+	public static final int AT_ERR_NULL_PTRSIZE = (int)36;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_NOMEMORY = 37;
+	public static final int AT_ERR_NOMEMORY = (int)37;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_DEVICEINUSE = 38;
+	public static final int AT_ERR_DEVICEINUSE = (int)38;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_DEVICENOTFOUND = 39;
+	public static final int AT_ERR_DEVICENOTFOUND = (int)39;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_ERR_HARDWARE_OVERFLOW = 100;
+	public static final int AT_ERR_HARDWARE_OVERFLOW = (int)100;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_HANDLE_UNINITIALISED = -1;
+	public static final int AT_HANDLE_UNINITIALISED = (int)-1;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
-	public static final int AT_HANDLE_SYSTEM = 1;
+	public static final int AT_HANDLE_SYSTEM = (int)1;
 	/** <i>native declaration : lib\andorsdkj\atcore.h</i> */
 	public static abstract class FeatureCallback extends Callback<FeatureCallback > {
 		@Convention(Convention.Style.StdCall) 
@@ -121,7 +122,7 @@ public class AtcoreLibrary {
 		}
 		@Convention(Convention.Style.StdCall) 
 		public int apply(int Hndl, @Ptr long Feature, @Ptr long Context) {
-			return apply(Hndl, Pointer.pointerToAddress(Feature, Character.class), Pointer.pointerToAddress(Context));
+			return apply(Hndl, (Pointer)Pointer.pointerToAddress(Feature, Character.class), Pointer.pointerToAddress(Context));
 		}
 	};
 	/**

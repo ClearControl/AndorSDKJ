@@ -223,8 +223,8 @@ public class AndorSdkJTestsLowLevel
 		assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
 
 		// Stop the acquisition
-		Pointer<Character> acqStop = Pointer.allocateChars(16);
-		acqStop.setCString("Acquisition Stop");
+		Pointer<Character> acqStop = Pointer.allocateChars(32);
+		acqStop.setWideCString("Acquisition Stop");
 		lReturnCode = AtcoreLibrary.AT_Command(	lCameraHandle.getInt(),
 																						acqStop);
 		System.out.println("ret from stop: " + lReturnCode);

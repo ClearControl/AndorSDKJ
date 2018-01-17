@@ -32,7 +32,8 @@ public class AndorCameraDemo
 		try (
 				// create an AndorSDKJ instance
 				AndorSdkJ lAndorEnvironment = new AndorSdkJ();
-				AndorCamera lAndorZyla = lAndorEnvironment.openCamera(lCameraIndex);)
+				AndorCamera lAndorZyla = lAndorEnvironment.openCamera(lCameraIndex);
+ )
 		{
 			System.out.println("Initializing the library and opening a camera... ");
 		}
@@ -66,11 +67,11 @@ public class AndorCameraDemo
 		int lCameraIndex = 0;
 		boolean noErrors = true;
 
-		try (
-				// create an AndorSDKJ instance
-				AndorSdkJ lAndorEnvironment = new AndorSdkJ();
-				AndorCamera lAndorZyla = lAndorEnvironment.openCamera(lCameraIndex);)
+		try
 		{
+			AndorSdkJ lAndorEnvironment = new AndorSdkJ();
+			lAndorEnvironment.open();
+			AndorCamera lAndorZyla = lAndorEnvironment.openCamera(lCameraIndex);
 			System.out.println("Initialized the library and opening a camera... ");
 
 			System.out.println("Setting the pixel ecoding... ");
@@ -108,13 +109,13 @@ public class AndorCameraDemo
 		int lCameraIndex = 0;
 		boolean noErrors = true;
 
-		try (
-				// create an AndorSDKJ instance
-				AndorSdkJ lAndorEnvironment = new AndorSdkJ();
-				AndorCamera lAndorZyla = lAndorEnvironment.openCamera(lCameraIndex);)
+		try
 		{
 			//System.out.println("Initialized the library and opening a camera... ");
 
+            AndorSdkJ lAndorEnvironment = new AndorSdkJ();
+            lAndorEnvironment.open();
+            AndorCamera lAndorZyla = lAndorEnvironment.openCamera(lCameraIndex);
 			//System.out.println("Setting the pixel ecoding... ");
 			// setting the camera parameters
 			lAndorZyla.set16PixelEncoding();
@@ -137,7 +138,7 @@ public class AndorCameraDemo
 			//acq begins
 			lAndorZyla.startAcquisition();
 			
-			for (int i = 0; i < 100; i++)
+			for (int i = 0; i < 2; i++)
 			{
 				lAndorZyla.SoftwareTrigger();
 				buffers[0] = lAndorZyla.waitForBuffer(5, TimeUnit.SECONDS);
@@ -151,7 +152,7 @@ public class AndorCameraDemo
 			
 			
 			
-			arrayToHoldABuffer = toArray(buffers[0], 2048, 2048);
+			arrayToHoldABuffer = toArray(buffers[0], 2048+12, 2048);
 //			byte[] dataRavel = new byte[height*width];
 //			dataRavel =  buffers[1].getPointer().getBytes(2*width*height);
 //			

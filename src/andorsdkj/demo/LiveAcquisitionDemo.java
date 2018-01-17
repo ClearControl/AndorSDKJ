@@ -17,12 +17,12 @@ public class LiveAcquisitionDemo
 	{
 		boolean noErrors = true;
 		int lCameraIndex = 0;
-		try (
-				// create an AndorSDKJ instance
-				AndorSdkJ lAndorEnvironment = new AndorSdkJ();
-				AndorCamera lAndorZyla = lAndorEnvironment.openCamera(lCameraIndex); )
+		try
 		{
 		//	System.out.println("Initialized the library and opening a camera... ");
+			AndorSdkJ lAndorEnvironment = new AndorSdkJ();
+			lAndorEnvironment.open();
+			AndorCamera lAndorZyla = lAndorEnvironment.openCamera(lCameraIndex);
 
 			System.out.println("Setting the pixel encoding... ");
 			lAndorZyla.setStandardPixelEncoding();

@@ -8,3 +8,11 @@ build/
 .DS_Store
 /nbproject/private/
 /nbbuild/
+*.h
+*.H
+*.dll
+tools
+out
+
+#IDE
+.idea

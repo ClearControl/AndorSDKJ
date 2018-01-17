@@ -19,7 +19,6 @@ public class SequenceAcquisition implements AutoCloseable
 
 	public SequenceAcquisition(AndorCamera pAndorCamera, ImageSequence pImageSequence)
 	{
-		super();
 		this.mAndorCamera = pAndorCamera;
 		this.mImSec = pImageSequence;
 		this.mDepth = mImSec.getDepth();
@@ -28,7 +27,7 @@ public class SequenceAcquisition implements AutoCloseable
 	public void acquireSequence(long pTimeOut, TimeUnit pTimeUnit) throws AndorSdkJException
 	{
 
-		mAndorCamera.setCycleMode(CycleMode.FIXED);
+//		mAndorCamera.setCycleMode(CycleMode.FIXED);
 //		this.mHeight = pHeight;
 //		this.mWidth = pWidth;
 //		this.mDepth = pDepth;
@@ -42,7 +41,7 @@ public class SequenceAcquisition implements AutoCloseable
 //		}
 		
 		
-		mAndorCamera.setFrameCount((int)mDepth);
+	//	mAndorCamera.setFrameCount((int)mDepth);
 
 		
 		//mImSec = new ImageSequence(mAndorCamera.getImageSizeInBytes(), mDepth);
@@ -54,12 +53,14 @@ public class SequenceAcquisition implements AutoCloseable
 			mAndorCamera.enqueueBuffer(mImSec.getImageBufferArray()[i]);
 		}
 
-		mAndorCamera.startAcquisition();
+		//mAndorCamera.startAcquisition();
 
 		for (int i = 0; i < mDepth; i++)
 		{
 			mAndorCamera.waitForBuffer(pTimeOut, pTimeUnit);
 		}
+		
+		//mAndorCamera.stopAcquisition();
 
 
 		//mAndorCamera.stopAcquisition();

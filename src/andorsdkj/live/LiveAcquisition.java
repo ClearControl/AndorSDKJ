@@ -100,7 +100,7 @@ public class LiveAcquisition {
 							int[][] BufferArray = toArray(lImageBufferToProcess, 2048, 2048);
 							ArrayAndMax aux = new ArrayAndMax(BufferArray);
 
-							savePNG(BufferArray, "C:\\Users\\myersadmin\\images\\", "array.png");
+							savePNG(BufferArray, "C:\\Users\\myersadmin\\images\\", "array1.png");
 							notify();
 						}
 

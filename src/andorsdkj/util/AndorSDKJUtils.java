@@ -267,18 +267,24 @@ public class AndorSDKJUtils
 		
 		Pointer<Pointer<Byte>> lPointerPointerBuffer = Pointer.allocatePointer(Byte.class);
 		Pointer<Integer> lPointerBufferSize = Pointer.allocateInt();
-		System.out.println("allocated pointers");
+		
+		if (mDebugMessages)
+			System.out.println("allocated pointers");
 		handleErrorWithException(	"Error in waiting buffer for camera: ",
 															AtcoreLibrary.AT_WaitBuffer(pAndorCamera.getHandle(),
 																													lPointerPointerBuffer,
 																													lPointerBufferSize,
 																													(int) TimeUnit.MILLISECONDS.convert(pTimeOut,
 																																															pTimeUnit)));
-		System.out.println("buffer acquired, proceeding to IB construction");
+		
+		if (mDebugMessages)
+			System.out.println("buffer acquired, proceeding to IB construction");
 
 		ImageBuffer lImageBuffer = new ImageBuffer(	lPointerPointerBuffer.get(),
 																								lPointerBufferSize.get());
-		System.out.println("checking the ImageBuffer construction inside the wait-for-buffer method ---> IB pointer: " + lImageBuffer.getPointer() + " pointer VB: " + lImageBuffer.getPointer().getValidBytes() + " image size: " + lImageBuffer.getImageSizeInBytes() );
+		
+		if (mDebugMessages)
+			System.out.println("checking the ImageBuffer construction inside the wait-for-buffer method ---> IB pointer: " + lImageBuffer.getPointer() + " pointer VB: " + lImageBuffer.getPointer().getValidBytes() + " image size: " + lImageBuffer.getImageSizeInBytes() );
 		
 	
 
@@ -303,6 +309,10 @@ public class AndorSDKJUtils
 	{
 		return (pErrorCode != AtcoreLibrary.AT_SUCCESS);
 
+	}
+	
+	public static void setDebugMessages(boolean pFlag) {
+		mDebugMessages = pFlag;
 	}
 
 }

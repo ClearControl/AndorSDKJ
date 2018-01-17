@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.TimeUnit;
 
+import org.bridj.Pointer;
 import org.junit.Test;
 
 import andorsdkj.AndorCamera;
@@ -17,6 +18,29 @@ import andorsdkj.sequence.ImageSequence;
 import andorsdkj.sequence.SequenceAcquisition;
 
 public class ImageSequenceDemo {
+
+	@Test
+	public void TestImageSequenceConstruction() {
+		int lHeight = 100;
+		int lWidth = 100;
+		int lDepth = 100;
+
+		int lImageSizeInBytes = lHeight * lWidth * lDepth * 8;
+
+		ImageSequence lImageSequence = new ImageSequence(lImageSizeInBytes, lWidth, lHeight, lDepth);
+
+		System.out.println("ImageSequence created:\n" + lImageSequence);
+
+		assertTrue(lHeight == lImageSequence.getHeight());
+		assertTrue(lWidth == lImageSequence.getWidth());
+		assertTrue(lDepth == lImageSequence.getDepth());
+		assertTrue(lImageSizeInBytes == lImageSequence.getImageSizeInBytes());
+
+		Pointer<Byte> lPointer = Pointer.allocateBytes(lDepth * lImageSizeInBytes);
+		lImageSequence = new ImageSequence(lImageSizeInBytes, lHeight, lWidth, lDepth, lPointer);
+
+	}
+
 	@Test
 	public void ImageSequenceTest() {
 		boolean noErrors = true;
@@ -54,6 +78,8 @@ public class ImageSequenceDemo {
 				}
 
 			});
+
+			lSequenceAcquisition.acquireSequence(5, TimeUnit.SECONDS);
 
 			lSequenceAcquisition.acquireSequence(5, TimeUnit.SECONDS);
 
