@@ -8,11 +8,18 @@ build/
 .DS_Store
 /nbproject/private/
 /nbbuild/
+
+# External Libraries
 *.h
 *.H
 *.dll
-tools
-out
+*.lib
 
 #IDE
 .idea
+
+# Auxillary
+tools
+
+# Compiled
+out

@@ -19,41 +19,41 @@ public class LiveAcquisitionDemo
 		int lCameraIndex = 0;
 		try
 		{
-		//	System.out.println("Initialized the library and opening a camera... ");
+			//	System.out.println("Initialized the library and opening a camera... ");
 			AndorSdkJ lAndorEnvironment = new AndorSdkJ();
 			lAndorEnvironment.open();
 			AndorCamera lAndorZyla = lAndorEnvironment.openCamera(lCameraIndex);
 
 			System.out.println("Setting the pixel encoding... ");
 			lAndorZyla.setStandardPixelEncoding();
-			
+
 			lAndorZyla.setExposureTimeInSeconds(0.1);
 			lAndorZyla.setReadoutRate(ReadOutRate._100_MHz);
 			lAndorZyla.setCycleMode(CycleMode.CONTINUOUS);
 			lAndorZyla.allocateAndQueueBuffers(1);
-						
+
 			// TODO: @Alex: add setWidthHeight and getWidth and getHeight for camera
-			
+
 			LiveAcquisition lLiveAcquisition = new LiveAcquisition(lAndorZyla);
-			
+
 			lLiveAcquisition.addListener((s,i)->{System.out.println(i);});
-			
+
 			lLiveAcquisition.start();
-			
+
 			Thread.sleep(10000);
-			
+
 			lLiveAcquisition.stop();
-	
-			
+
+
 			//TODO: change image resolution
-//			
+//
 //			lLiveAcquisition.start();
-//			
+//
 //			Thread.sleep(2000);
-//			
+//
 //			lLiveAcquisition.stop();
-						
-			
+
+
 		}
 		catch (AndorSdkJException e)
 		{
