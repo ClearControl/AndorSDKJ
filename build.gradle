@@ -107,7 +107,7 @@ publishing {
         maven(MavenPublication) {
             groupId 'andor'
             artifactId 'andorsdkj'
-            version '0.2.0'
+            version '0.2.1'
 
             from components.java
         }
