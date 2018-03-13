@@ -48,6 +48,13 @@ public class AndorCamera implements AutoCloseable {
 		AndorSDKJUtils.setKeyValue(this, "PixelEncoding", "Mono12Packed");
 	}
 
+	public void setBinning(int pCoupling) throws AndorSdkJException{
+		if (mDebugMessages)
+			System.out.println("AndorCamera: setting binning for camera with index " + this.mCameraIndex);
+		String lBinningString = pCoupling+"x"+pCoupling;
+		AndorSDKJUtils.setKeyValue(this,"AOIBinning", lBinningString);
+	}
+
 	public void set16PixelEncoding() throws AndorSdkJException {
 		if (mDebugMessages)
 			System.out.println("AndorCamera: setting 16 bit pixel encoding for camera with index " + this.mCameraIndex);

@@ -474,6 +474,74 @@ public class AndorSdkJTestsLowLevel
 			assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
 			System.out.println(" Done!");
 	}
+
+	@Test
+	public void testBinning() throws InterruptedException {
+
+		// Initializing the library...
+		System.out.print("Initializing the  library... ");
+		int lReturnCode = AtcoreLibrary.AT_InitialiseLibrary();
+		System.out.print("Return code: " + lReturnCode);
+		assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
+		System.out.println(" Done!");
+
+		// Identifying the number of devices
+		System.out.print("Identifying the number of devices... ");
+		Pointer<Long> lNumberDevices = Pointer.allocateLong();
+		Pointer<Character> fDeviceCount = Pointer.pointerToWideCString("DeviceCount");
+		lReturnCode = AtcoreLibrary.AT_GetInt(AtcoreLibrary.AT_HANDLE_SYSTEM, fDeviceCount, lNumberDevices);
+		System.out.print("Return code: " + lReturnCode + ". # of devices is: " + lNumberDevices.getInt());
+		assertTrue(lNumberDevices.getLong() > 2);
+		System.out.println(" Done! Number of devices: " + lNumberDevices.getLong());
+
+		// Initializing the camera, creating a handle
+		System.out.print("Initializing the camera... ");
+		Pointer<Integer> lCameraHandle = Pointer.allocateInt();
+		lReturnCode = AtcoreLibrary.AT_Open(0, lCameraHandle);
+		System.out.print("Return code: " + lReturnCode);
+		assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
+		System.out.println(" Done!");
+
+		// Changing the preamp gain
+		System.out.print("Setting the preamp gain so that it matches the encoding we aim at... ");
+		Pointer<Character> fPreAmpGain = Pointer.pointerToWideCString("SimplePreAmpGainControl");
+		String lPreampGainStr = "12-bit (high well capacity)";
+		Pointer<Character> lGain = Pointer.pointerToWideCString(lPreampGainStr);
+		lReturnCode = AtcoreLibrary.AT_SetEnumeratedString(lCameraHandle.getInt(), fPreAmpGain, lGain);
+		System.out.print(" Return code: " + lReturnCode);
+		System.out.println(" Done! Pream gain is set to: " + lPreampGainStr);
+
+		// Set pixel encoding
+		System.out.print("Setting the pixel encoding... ");
+		Pointer<Character> fPixelEncoding = Pointer.pointerToWideCString("PixelEncoding");
+		Pointer<Character> lMono12Packed = Pointer.pointerToWideCString("Mono12Packed");
+		lReturnCode = AtcoreLibrary.AT_SetEnumeratedString(lCameraHandle.getInt(), fPixelEncoding, lMono12Packed);
+		System.out.print("Return code: " + lReturnCode);
+		assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
+		System.out.println(" Done!");
+
+		// Set binning
+		System.out.print("Setting the binning... ");
+		Pointer<Character> lBinningCommandString = Pointer.pointerToWideCString("AOIBinning");
+		Pointer<Character> lBinningMode = Pointer.pointerToWideCString("2x2");
+		lReturnCode = AtcoreLibrary.AT_SetEnumeratedString(lCameraHandle.getInt(), lBinningCommandString, lBinningMode);
+		System.out.print("Return code: " + lReturnCode);
+		assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
+		System.out.println(" Done!");
+
+		// Closing and finalizing
+		System.out.print("Closing the camera... ");
+		lReturnCode = AtcoreLibrary.AT_Close(lCameraHandle.getInt());
+		System.out.print("Return code: " + lReturnCode);
+		assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
+		System.out.println(" Done!");
+
+		System.out.print("Finalizing the library... ");
+		lReturnCode = AtcoreLibrary.AT_FinaliseLibrary();
+		System.out.print("Return code: " + lReturnCode);
+		assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
+		System.out.println(" Done!");
+	}
 	
 	@Test
 	public void testFrameCountSequenceAcquisition() throws InterruptedException {

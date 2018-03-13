@@ -17,9 +17,13 @@ build/
 
 #IDE
 .idea
+*.iml
 
 # Auxillary
 tools
 
 # Compiled
 out
+
+# Logs
+*.log

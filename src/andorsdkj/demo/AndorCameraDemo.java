@@ -62,7 +62,47 @@ public class AndorCameraDemo
 	}
 
 	@Test
-	public void SetPixelEncoding()
+public void SetPixelEncoding()
+{
+	int lCameraIndex = 0;
+	boolean noErrors = true;
+
+	try
+	{
+		AndorSdkJ lAndorEnvironment = new AndorSdkJ();
+		lAndorEnvironment.open();
+		AndorCamera lAndorZyla = lAndorEnvironment.openCamera(lCameraIndex);
+		System.out.println("Initialized the library and opening a camera... ");
+
+		System.out.println("Setting the pixel ecoding... ");
+		lAndorZyla.setStandardPixelEncoding();
+	}
+	catch (AndorSdkJException e)
+	{
+		System.out.println("Exception from the SDK: " + e);
+		noErrors = false;
+	}
+	catch (Exception e)
+	{
+		System.out.println("No SDK exceptions. Other exceptions: " + e);
+		noErrors = false;
+	}
+	finally
+	{
+		if (noErrors)
+		{
+			System.out.println("Done!");
+		}
+		else
+		{
+			System.out.println("Ended with exceptions.");
+		}
+		assertTrue(noErrors);
+	}
+}
+
+	@Test
+	public void set2by2Binning()
 	{
 		int lCameraIndex = 0;
 		boolean noErrors = true;
@@ -75,7 +115,7 @@ public class AndorCameraDemo
 			System.out.println("Initialized the library and opening a camera... ");
 
 			System.out.println("Setting the pixel ecoding... ");
-			lAndorZyla.setStandardPixelEncoding();
+			lAndorZyla.setBinning(2);
 		}
 		catch (AndorSdkJException e)
 		{
@@ -123,14 +163,15 @@ public class AndorCameraDemo
 			lAndorZyla.setTriggeringMode(TriggerMode.SOFTWARE);
 			lAndorZyla.setExposureTimeInSeconds(0.03);
 			lAndorZyla.setReadoutRate(ReadOutRate._100_MHz);
+			lAndorZyla.setBinning(2);
 			
 			// queueing buffers
 			int lNumberOfBuffers = 1;
 			lAndorZyla.allocateAndQueueAlignedBuffers(lNumberOfBuffers);
 			
 		// trying to convert buffer1 to an array
-			int height = 2048;
-			int width = 2048;
+			int height = 1040;
+			int width = 1024;
 			
 			// Triggering and acquiring buffers
 			ImageBuffer[] buffers = new ImageBuffer[lNumberOfBuffers];
@@ -143,7 +184,7 @@ public class AndorCameraDemo
 				lAndorZyla.SoftwareTrigger();
 				buffers[0] = lAndorZyla.waitForBuffer(5, TimeUnit.SECONDS);
 				System.out.println("about to enter toArray");
-				arrayToHoldABuffer = toArray(buffers[0], 2048, 2048);
+				arrayToHoldABuffer = toArray(buffers[0], width, height);
 				lAndorZyla.enqueueBuffer(buffers[0]);
 			}
 			
@@ -152,7 +193,7 @@ public class AndorCameraDemo
 			
 			
 			
-			arrayToHoldABuffer = toArray(buffers[0], 2048+12, 2048);
+			arrayToHoldABuffer = toArray(buffers[0], height, width);
 //			byte[] dataRavel = new byte[height*width];
 //			dataRavel =  buffers[1].getPointer().getBytes(2*width*height);
 //			
@@ -163,9 +204,9 @@ public class AndorCameraDemo
 //					arrayToHoldABuffer[i][j] = dataRavel[i*height + j];
 //				}
 //			}
-			String path = "C:\\Users\\myersadmin\\images\\";
-			String name = "arrayTest.png"; 					
-			savePNG(arrayToHoldABuffer, path, name);
+//			String path = "C:\\Users\\myersadmin\\images\\";
+//			String name = "arrayTest.png";
+//			savePNG(arrayToHoldABuffer, path, name);
 			
 			
 			
