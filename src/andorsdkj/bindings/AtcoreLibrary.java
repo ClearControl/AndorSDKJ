@@ -14,7 +14,7 @@ import org.bridj.ann.Runtime;
  * a tool written by <a href="http://ochafik.com/">Olivier Chafik</a> that <a href="http://code.google.com/p/jnaerator/wiki/CreditsAndLicense">uses a few opensource projects.</a>.<br>
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> or <a href="http://bridj.googlecode.com/">BridJ</a> .
  */
-@Library(value = "atcore", dependencies = {"atcore.dll", "atblkbx.dll", "atcl_bitflow.dll", "atdevapogee.dll", "atdevregcam.dll", "atdevsimcam.dll", "atspooler.dll", "atusb_libusb.dll", "atusb_libusb10.dll", "atutility.dll", "clallserial.dll", "atmcd64d.dll"}) 
+@Library(value = "atcore", dependencies = {"atcore.dll", "atblkbx.dll", "atcl_bitflow.dll", "atdevapogee.dll", "atdevregcam.dll", "atdevsimcam.dll", "atspooler.dll", "atusb_libusb.dll", "atusb_libusb10.dll", "atutility.dll", "clallserial.dll", "atmcd64d.dll"})
 @Runtime(CRuntime.class) 
 public class AtcoreLibrary {
 	static {

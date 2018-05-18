@@ -1,4 +1,4 @@
-package andorsdkj.bindings.demoLowLevel;
+package andorsdkj.demo.demoLowLevel;
 
 import org.bridj.BridJ;
 import org.bridj.Pointer;

@@ -1,4 +1,4 @@
-package andorsdkj.bindings.util;
+package andorsdkj.util;
 import java.util.Random;
 //import java.awt.image.BufferedImage;
 import java.awt.image.*;

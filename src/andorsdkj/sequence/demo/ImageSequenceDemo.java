@@ -1,7 +1,7 @@
 package andorsdkj.sequence.demo;
 
-import static andorsdkj.bindings.util.Buffer16ToArray.toArray;
-import static andorsdkj.bindings.util.SavePNG.savePNG;
+import static andorsdkj.util.Buffer16ToArray.toArray;
+import static andorsdkj.util.SavePNG.savePNG;
 import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.TimeUnit;

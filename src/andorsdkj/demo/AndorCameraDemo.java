@@ -14,8 +14,7 @@ import andorsdkj.enums.ReadOutRate;
 import andorsdkj.enums.TriggerMode;
 import andorsdkj.ImageBuffer;
 
-import static andorsdkj.bindings.util.Buffer16ToArray.toArray;
-import static andorsdkj.bindings.util.SavePNG.savePNG;
+import static andorsdkj.util.Buffer16ToArray.toArray;
 
 public class AndorCameraDemo
 {

@@ -1,4 +1,4 @@
-package andorsdkj.bindings.demoLowLevel;
+package andorsdkj.demo.demoLowLevel;
 
 import static org.junit.Assert.assertTrue;
 
@@ -762,7 +762,7 @@ public class AndorSdkJTestsLowLevel
 			// Changing the preamp gain
 			System.out.print("Setting the preamp gain so that it matches the encoding we aim at... ");			
 			Pointer<Character> fPreAmpGain = Pointer.pointerToWideCString("SimplePreAmpGainControl");
-			String lPreampGainStr = "12-bit (high well capacity)";
+			String lPreampGainStr = "16-bit (low noise & high well capacity)";
 			Pointer<Character> lGain = Pointer.pointerToWideCString(lPreampGainStr);
 			lReturnCode = AtcoreLibrary.AT_SetEnumeratedString(lCameraHandle.getInt(), fPreAmpGain, lGain);
 			System.out.print(" Return code: " + lReturnCode);
@@ -771,11 +771,29 @@ public class AndorSdkJTestsLowLevel
 			// Set pixel encoding
 			System.out.print("Setting the pixel encoding... ");
 			Pointer<Character> fPixelEncoding = Pointer.pointerToWideCString("PixelEncoding");
-			Pointer<Character> lMono12Packed = Pointer.pointerToWideCString("Mono12Packed");
+			Pointer<Character> lMono12Packed = Pointer.pointerToWideCString("Mono16");
 			lReturnCode = AtcoreLibrary.AT_SetEnumeratedString(lCameraHandle.getInt(), fPixelEncoding, lMono12Packed);
 			System.out.print("Return code: " + lReturnCode);
 			assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
 			System.out.println(" Done!");
+
+			// Setting exposure time
+			System.out.print("Setting exposure time... ");
+			Pointer<Character> fExposureTime = Pointer.pointerToWideCString("ExposureTime");
+			float lExposureTimeSeconds = .1f;
+			lReturnCode = AtcoreLibrary.AT_SetFloat(lCameraHandle.getInt(), fExposureTime, lExposureTimeSeconds);
+			System.out.print("Return code: " + lReturnCode);
+			assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
+			System.out.println(" Done! Set to: " + lExposureTimeSeconds);
+
+			// Setting readout rate
+			System.out.print("Setting the readout rate... ");
+			Pointer<Character> fReadoutRate = Pointer.pointerToWideCString("PixelReadoutRate");
+			Pointer<Character> lReadoutRateMHz = Pointer.pointerToWideCString("280 MHz");
+			lReturnCode = AtcoreLibrary.AT_SetEnumeratedString(lCameraHandle.getInt(), fReadoutRate, lReadoutRateMHz);
+			System.out.print("Return code: " + lReturnCode);
+			assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
+			System.out.println(" Done! Set to " + lReadoutRateMHz.getWideCString());
 			
 			// Get the image size
 			System.out.print("Getting the image size... ");
@@ -810,14 +828,31 @@ public class AndorSdkJTestsLowLevel
 			Pointer<Integer> lBufferSize = Pointer.allocateInt();
 			
 			// Waiting for the buffer
+
 			System.out.print("Waiting for buffer  1");
+			double t1 = System.nanoTime();
 			lReturnCode = AtcoreLibrary.AT_WaitBuffer(lCameraHandle.getInt(), lBuffer, lBufferSize, 10000);
+			double t2 = System.nanoTime();
 			System.out.print("Return code: " + lReturnCode + ".");
 			assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
+
 			
 			System.out.println("First three bytes of the image are: " + lBuffer.get().getByte() + 
 																									 " " + lBuffer.get().offset(1).get() + 
 																									 " " + lBuffer.get().offset(2).get());
+
+			System.out.println(String.format("It took %f ms", (t2-t1)*1e-6));
+
+			// Querying the readout time
+			System.out.print("Querying the readout time...... ");
+			Pointer<Character> lFeature = Pointer.pointerToWideCString("ReadoutTime");
+			Pointer<Double> lValue = Pointer.allocateDouble();
+			lReturnCode = AtcoreLibrary.AT_GetFloat(lCameraHandle.get(),lFeature,lValue);
+			System.out.print("Return code: " + lReturnCode);
+			System.out.println(String.format("Readout time is %.3f.", lValue.get()));
+			assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
+			System.out.println(" Done!");
+
 			
 			// Stopping the acquisition
 			System.out.print("Stopping the acquisition... ");
@@ -887,6 +922,84 @@ public class AndorSdkJTestsLowLevel
 			System.out.print("Return code: " + lReturnCode);
 			assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
 			System.out.println(" Done!");
+	}
+
+	@Test
+	public void testReadoutTime() throws InterruptedException {
+
+		// Initializing the library...
+		System.out.print("Initializing the  library... ");
+		int lReturnCode = AtcoreLibrary.AT_InitialiseLibrary();
+		System.out.print("Return code: " + lReturnCode);
+		assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
+		System.out.println(" Done!");
+
+		// Identifying the number of devices
+		System.out.print("Identifying the number of devices... ");
+		Pointer<Long> lNumberDevices = Pointer.allocateLong();
+		Pointer<Character> fDeviceCount = Pointer.pointerToWideCString("DeviceCount");
+		lReturnCode = AtcoreLibrary.AT_GetInt(AtcoreLibrary.AT_HANDLE_SYSTEM, fDeviceCount, lNumberDevices);
+		System.out.print("Return code: " + lReturnCode + ". # of devices is: " + lNumberDevices.getInt());
+		assertTrue(lNumberDevices.getLong() > 2);
+		System.out.println(" Done! Number of devices: " + lNumberDevices.getLong());
+
+		// Initializing the camera, creating a handle
+		System.out.print("Initializing the camera... ");
+		Pointer<Integer> lCameraHandle = Pointer.allocateInt();
+		lReturnCode = AtcoreLibrary.AT_Open(0, lCameraHandle);
+		System.out.print("Return code: " + lReturnCode);
+		assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
+		System.out.println(" Done!");
+
+		// Changing the preamp gain
+		System.out.print("Setting the preamp gain so that it matches the encoding we aim at... ");
+		Pointer<Character> fPreAmpGain = Pointer.pointerToWideCString("SimplePreAmpGainControl");
+		String lPreampGainStr = "16-bit (low noise & high well capacity)";
+		Pointer<Character> lGain = Pointer.pointerToWideCString(lPreampGainStr);
+		lReturnCode = AtcoreLibrary.AT_SetEnumeratedString(lCameraHandle.getInt(), fPreAmpGain, lGain);
+		System.out.print(" Return code: " + lReturnCode);
+		System.out.println(" Done! Pream gain is set to: " + lPreampGainStr);
+
+		// Set pixel encoding
+		System.out.print("Setting the pixel encoding... ");
+		Pointer<Character> fPixelEncoding = Pointer.pointerToWideCString("PixelEncoding");
+		Pointer<Character> lMono12Packed = Pointer.pointerToWideCString("Mono16");
+		lReturnCode = AtcoreLibrary.AT_SetEnumeratedString(lCameraHandle.getInt(), fPixelEncoding, lMono12Packed);
+		System.out.print("Return code: " + lReturnCode);
+		assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
+		System.out.println(" Done!");
+
+		// Setting readout rate
+		System.out.print("Setting the readout rate... ");
+		Pointer<Character> fReadoutRate = Pointer.pointerToWideCString("PixelReadoutRate");
+		Pointer<Character> lReadoutRateMHz = Pointer.pointerToWideCString("280 MHz");
+		lReturnCode = AtcoreLibrary.AT_SetEnumeratedString(lCameraHandle.getInt(), fReadoutRate, lReadoutRateMHz);
+		System.out.print("Return code: " + lReturnCode);
+		assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
+		System.out.println(" Done! Set to 100 MHz ");
+
+		// Querying the readout time
+		System.out.print("Querying the readout time...... ");
+		Pointer<Character> lFeature = Pointer.pointerToWideCString("ReadoutTime");
+		Pointer<Double> lValue = Pointer.allocateDouble();
+		lReturnCode = AtcoreLibrary.AT_GetFloat(lCameraHandle.get(),lFeature,lValue);
+		System.out.print("Return code: " + lReturnCode);
+		System.out.println(String.format("Readout time is %.3f.", lValue.get()));
+		assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
+		System.out.println(" Done!");
+
+		// Closing and finalizing
+		System.out.print("Closing the camera... ");
+		lReturnCode = AtcoreLibrary.AT_Close(lCameraHandle.getInt());
+		System.out.print("Return code: " + lReturnCode);
+		assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
+		System.out.println(" Done!");
+
+		System.out.print("Finalizing the library... ");
+		lReturnCode = AtcoreLibrary.AT_FinaliseLibrary();
+		System.out.print("Return code: " + lReturnCode);
+		assertTrue(lReturnCode == AtcoreLibrary.AT_SUCCESS);
+		System.out.println(" Done!");
 	}
 	
 }

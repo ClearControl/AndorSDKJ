@@ -1,7 +1,7 @@
 package andorsdkj.live;
 
-import static andorsdkj.bindings.util.Buffer16ToArray.toArray;
-import static andorsdkj.bindings.util.SavePNG.savePNG;
+import static andorsdkj.util.Buffer16ToArray.toArray;
+import static andorsdkj.util.SavePNG.savePNG;
 
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
@@ -13,7 +13,7 @@ import org.bridj.Pointer;
 import andorsdkj.AndorCamera;
 import andorsdkj.AndorSdkJException;
 import andorsdkj.ImageBuffer;
-import andorsdkj.bindings.util.ArrayAndMax;
+import andorsdkj.util.ArrayAndMax;
 
 public class LiveAcquisition {
 

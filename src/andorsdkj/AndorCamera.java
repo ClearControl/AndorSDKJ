@@ -245,6 +245,14 @@ public class AndorCamera implements AutoCloseable {
 	public int getFrameWidth() throws AndorSdkJException {
 		return AndorSDKJUtils.getInt(this, "AOIWidth");
 	}
+
+	public void setOverlapReadoutMode(boolean pFlag) throws AndorSdkJException{
+		AndorSDKJUtils.setBool(this,"Overlap", pFlag);
+	}
+
+	public boolean getOverlapReadoutMode() throws AndorSdkJException{
+		return AndorSDKJUtils.getBool(this, "Overlap");
+	}
 	
 	public void setDebugMessagesOn(boolean pFlag) {
 		mDebugMessages = pFlag;
