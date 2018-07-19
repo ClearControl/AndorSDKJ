@@ -49,23 +49,23 @@ public class AndorCamera implements AutoCloseable {
 		if (mDebugMessages)
 			System.out.println("AndorCamera: setting standard pixel encoding for camera with index " + this.mCameraIndex);
 
-		AndorSDKJUtils.setKeyValue(this, "SimplePreAmpGainControl", "12-bit (high well capacity)");
-		AndorSDKJUtils.setKeyValue(this, "PixelEncoding", "Mono12Packed");
+		AndorSDKJUtils.setEnumeratedString(this, "SimplePreAmpGainControl", "12-bit (high well capacity)");
+		AndorSDKJUtils.setEnumeratedString(this, "PixelEncoding", "Mono12Packed");
 	}
 
 	public void setBinning(int pCoupling) throws AndorSdkJException{
 		if (mDebugMessages)
 			System.out.println("AndorCamera: setting binning for camera with index " + this.mCameraIndex);
 		String lBinningString = pCoupling+"x"+pCoupling;
-		AndorSDKJUtils.setKeyValue(this,"AOIBinning", lBinningString);
+		AndorSDKJUtils.setEnumeratedString(this,"AOIBinning", lBinningString);
 	}
 
 	public void set16PixelEncoding() throws AndorSdkJException {
 		if (mDebugMessages)
 			System.out.println("AndorCamera: setting 16 bit pixel encoding for camera with index " + this.mCameraIndex);
 
-		AndorSDKJUtils.setKeyValue(this, "SimplePreAmpGainControl", "16-bit (low noise & high well capacity)");
-		AndorSDKJUtils.setKeyValue(this, "PixelEncoding", "Mono16");
+		AndorSDKJUtils.setEnumeratedString(this, "SimplePreAmpGainControl", "16-bit (low noise & high well capacity)");
+		AndorSDKJUtils.setEnumeratedString(this, "PixelEncoding", "Mono16");
 	}
 
 	public void setTriggeringMode(TriggerMode pAndorTriggerMode) throws AndorSdkJException {
@@ -73,7 +73,7 @@ public class AndorCamera implements AutoCloseable {
 			System.out.println(
 			        "AndorCamera: setting triggering mode to: " + pAndorTriggerMode.name() + " for the camera with index: " + this.mCameraIndex);
 		String str = pAndorTriggerMode.toString().substring(0, 1) + pAndorTriggerMode.toString().substring(1).toLowerCase();
-		AndorSDKJUtils.setKeyValue(this, "TriggerMode", str);
+		AndorSDKJUtils.setEnumeratedString(this, "TriggerMode", str);
 	}
 
 	public void setFrameCount(int pNumberOfImages) throws AndorSdkJException {
@@ -98,7 +98,7 @@ public class AndorCamera implements AutoCloseable {
 
 		String str = pAndorCycleMode.toString().substring(0, 1) + pAndorCycleMode.toString().substring(1).toLowerCase();
 		// System.out.println("---> from setCycleMode ---> mode is: " + str);
-		AndorSDKJUtils.setKeyValue(this, "CycleMode", str);
+		AndorSDKJUtils.setEnumeratedString(this, "CycleMode", str);
 	}
 
 	public void setExposureTimeInSeconds(double pExposureTimeSeconds) throws AndorSdkJException {
@@ -113,7 +113,7 @@ public class AndorCamera implements AutoCloseable {
 		if (mDebugMessages)
 			System.out.println("AndorCamera: setting readout rate to: " + pReadOutRate + " for the camera with index " + this.mCameraIndex);
 
-		AndorSDKJUtils.setKeyValue(this, "PixelReadoutRate", pReadOutRate.name().replace('_', ' ').trim());
+		AndorSDKJUtils.setEnumeratedString(this, "PixelReadoutRate", pReadOutRate.name().replace('_', ' ').trim());
 	}
 
 	public int getImageSizeInBytes() throws AndorSdkJException {
@@ -270,6 +270,6 @@ public class AndorCamera implements AutoCloseable {
 
 	public String getReadOutRate() throws AndorSdkJException{
 //	    return AndorSDKJUtils.getString(this, "PixelReadoutRate", 2, TimeUnit.SECONDS);
-        return AndorSDKJUtils.getEnumString(this, "PixelReadoutRate", 2, TimeUnit.SECONDS);
+        return AndorSDKJUtils.getEnumeratedString(this, "PixelReadoutRate", 2, TimeUnit.SECONDS);
     }
 }
