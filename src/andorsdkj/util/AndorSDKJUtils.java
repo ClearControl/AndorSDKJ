@@ -14,38 +14,44 @@ import andorsdkj.bindings.AtcoreLibrary;
 public class AndorSDKJUtils {
     public static boolean mDebugMessages = true;
 
-    //    public static long getLong(String pKey) throws AndorSdkJException {
-    //
-    //        getLogger().info("Getting a long value for the key: " + pKey);
-    //
-    //        Pointer<Character> lKeyPointer = Pointer.pointerToWideCString(pKey);
-    //        Pointer<Long> lPointerToLong = Pointer.allocateLong();
-    //
-    //        handleErrorWithException("Cannot retrieve long value for " + pKey, AtcoreLibrary.AT_GetInt(AtcoreLibrary.AT_HANDLE_SYSTEM,
-    // lKeyPointer, lPointerToLong));
-    //
-    //        final long lLongResult = lPointerToLong.getLong();
-    //        return lLongResult;
-    //    }
+    public static long getInt(String pKey) throws AndorSdkJException {
+
+        getLogger().info("Getting an integer value for the key: " + pKey);
+
+        Pointer<Character> lKeyPointer = Pointer.pointerToWideCString(pKey);
+        Pointer<Long> lPointerToLong = Pointer.allocateLong();
+
+        handleErrorWithException("Cannot retrieve integer value for " + pKey, AtcoreLibrary.AT_GetInt(AtcoreLibrary
+                .AT_HANDLE_SYSTEM, lKeyPointer, lPointerToLong));
+
+        final long lLongResult = lPointerToLong.getLong();
+        return lLongResult;
+    }
 
     public static int getInt(AndorCamera pAndorCamera, String pFeatureName) throws AndorSdkJException {
-        getLogger().info("Getting an integer value from the camera: " + pAndorCamera + " for the feature " + pFeatureName);
+        getLogger()
+                .info("Getting an integer value from the camera: " + pAndorCamera + " for the feature " + pFeatureName);
 
         Pointer<Long> lStorePointer = Pointer.allocateLong();
         Pointer<Character> lFeatureName = Pointer.pointerToWideCString(pFeatureName);
 
-        handleErrorWithException("Cannot get a long value for the following feature: " + pFeatureName, AtcoreLibrary.AT_GetInt(pAndorCamera
-                .getHandle(), lFeatureName, lStorePointer));
+        handleErrorWithException("Cannot get a long value for the following feature: " + pFeatureName,
+                AtcoreLibrary.AT_GetInt(pAndorCamera
+                        .getHandle(), lFeatureName, lStorePointer));
 
         return lStorePointer.getInt();
     }
 
-    public static void setInt(AndorCamera pAndorCamera, String pFeatureName, int pFeatureValue) throws AndorSdkJException {
-        getLogger().info("Setting an int value: " + pFeatureValue + " for the camera: " + pAndorCamera + " for the feature " + pFeatureName);
+    public static void setInt(AndorCamera pAndorCamera, String pFeatureName, int pFeatureValue) throws
+            AndorSdkJException {
+        getLogger()
+                .info("Setting an int value: " + pFeatureValue + " for the camera: " + pAndorCamera + " for the " +
+                        "feature " + pFeatureName);
 
         Pointer<Character> lKeyPointer = Pointer.pointerToWideCString(pFeatureName);
-        handleErrorWithException("Cannot set int value for " + pFeatureName, AtcoreLibrary.AT_SetInt(pAndorCamera.getHandle(), lKeyPointer,
-                pFeatureValue));
+        handleErrorWithException("Cannot set int value for " + pFeatureName,
+                AtcoreLibrary.AT_SetInt(pAndorCamera.getHandle(), lKeyPointer,
+                        pFeatureValue));
 
     }
 
@@ -55,17 +61,21 @@ public class AndorSDKJUtils {
         Pointer<Double> lStorePointer = Pointer.allocateDouble();
         Pointer<Character> lFeatureName = Pointer.pointerToWideCString(pFeatureName);
 
-        handleErrorWithException("Cannot get a float value for the following feature: " + pFeatureName, AtcoreLibrary.AT_GetFloat(pAndorCamera
-                .getHandle(), lFeatureName, lStorePointer));
+        handleErrorWithException("Cannot get a float value for the following feature: " + pFeatureName,
+                AtcoreLibrary.AT_GetFloat(pAndorCamera
+                        .getHandle(), lFeatureName, lStorePointer));
 
         return lStorePointer.getFloat();
     }
 
     public static void setFloat(AndorCamera pAndorCamera, String pKey, float pValue) throws AndorSdkJException {
-        getLogger().info("Setting a float value: " + pValue + " for the camera: " + pAndorCamera + " for the feature " + pKey);
+        getLogger()
+                .info("Setting a float value: " + pValue + " for the camera: " + pAndorCamera + " for the feature " +
+                        pKey);
 
         Pointer<Character> lKeyPointer = Pointer.pointerToWideCString(pKey);
-        handleErrorWithException("Cannot set a float value for " + pKey, AtcoreLibrary.AT_SetFloat(pAndorCamera.getHandle(), lKeyPointer, pValue));
+        handleErrorWithException("Cannot set a float value for " + pKey,
+                AtcoreLibrary.AT_SetFloat(pAndorCamera.getHandle(), lKeyPointer, pValue));
     }
 
     public static boolean getBool(AndorCamera pAndorCamera, String pFeatureName) throws AndorSdkJException {
@@ -73,38 +83,50 @@ public class AndorSDKJUtils {
 
         Pointer<Character> lKeyPointer = Pointer.pointerToWideCString(pFeatureName);
         Pointer<Integer> lValuePointer = Pointer.allocateInt();
-        handleErrorWithException("Cannot get a boolean value for " + pFeatureName, AtcoreLibrary.AT_GetBool(pAndorCamera.getHandle(), lKeyPointer,
-                lValuePointer));
+        handleErrorWithException("Cannot get a boolean value for " + pFeatureName,
+                AtcoreLibrary.AT_GetBool(pAndorCamera.getHandle(), lKeyPointer,
+                        lValuePointer));
         return lValuePointer.get() == 1;
     }
 
-    public static void setBool(AndorCamera pAndorCamera, String pFeatureName, boolean pFeatureValue) throws AndorSdkJException {
-        getLogger().info("Setting a boolean feature: " + pFeatureName + " to the value: " + pFeatureValue + " for the camera: " + pAndorCamera);
+    public static void setBool(AndorCamera pAndorCamera, String pFeatureName, boolean pFeatureValue) throws
+            AndorSdkJException {
+        getLogger()
+                .info("Setting a boolean feature: " + pFeatureName + " to the value: " + pFeatureValue + " for the " +
+                        "camera: " + pAndorCamera);
 
         Pointer<Character> lKeyPointer = Pointer.pointerToWideCString(pFeatureName);
-        handleErrorWithException("Cannot set boolean value for " + pFeatureName, AtcoreLibrary.AT_SetBool(pAndorCamera.getHandle(), lKeyPointer,
-                pFeatureValue ? 1 : 0));
+        handleErrorWithException("Cannot set boolean value for " + pFeatureName,
+                AtcoreLibrary.AT_SetBool(pAndorCamera.getHandle(), lKeyPointer,
+                        pFeatureValue ? 1 : 0));
     }
 
-    public static void setEnumeratedString(AndorCamera pAndorCamera, String pFeatureName, String pFeatureValue) throws AndorSdkJException {
-        getLogger().info("Setting the feature: " + pFeatureName + " for the camera: " + pAndorCamera + " to the value " + pFeatureValue);
+    public static void setEnumeratedString(AndorCamera pAndorCamera, String pFeatureName, String pFeatureValue)
+            throws AndorSdkJException {
+        getLogger()
+                .info("Setting the feature: " + pFeatureName + " for the camera: " + pAndorCamera + " to the value "
+                        + pFeatureValue);
 
         Pointer<Character> lKey = Pointer.pointerToWideCString(pFeatureName);
         Pointer<Character> lValue = Pointer.pointerToWideCString(pFeatureValue);
 
         String lErrorMessage = String.format("Cannot set %s:%s for camera %s \n", lKey, lValue, pAndorCamera);
-        handleErrorWithException(lErrorMessage, AtcoreLibrary.AT_SetEnumeratedString(pAndorCamera.getHandle(), lKey, lValue));
+        handleErrorWithException(lErrorMessage,
+                AtcoreLibrary.AT_SetEnumeratedString(pAndorCamera.getHandle(), lKey, lValue));
     }
 
     public static void setCommand(AndorCamera pAndorCamera, String pCommandString) throws AndorSdkJException {
         getLogger().info("Setting a command: " + pCommandString + " for the camera: " + pAndorCamera);
 
         Pointer<Character> lCommandString = Pointer.pointerToWideCString(pCommandString);
-        handleErrorWithException("Cannot perfrom the command: " + pCommandString + " for the camera " + pAndorCamera.getHandle(), AtcoreLibrary
-                .AT_Command(pAndorCamera.getHandle(), lCommandString));
+        handleErrorWithException(
+                "Cannot perfrom the command: " + pCommandString + " for the camera " + pAndorCamera.getHandle(),
+                AtcoreLibrary
+                        .AT_Command(pAndorCamera.getHandle(), lCommandString));
     }
 
-    public static void allocateAndQueueBuffers(AndorCamera pAndorCamera, int pImageSizeBytes, int pNumberOfBuffers) throws AndorSdkJException {
+    public static void allocateAndQueueBuffers(AndorCamera pAndorCamera, int pImageSizeBytes, int pNumberOfBuffers)
+            throws AndorSdkJException {
         getLogger().info("Allocating and queueing _" + pNumberOfBuffers + "_ buffers for the camera " + pAndorCamera);
 
         if (pNumberOfBuffers <= 0) {
@@ -112,14 +134,18 @@ public class AndorSDKJUtils {
         }
         for (int i = 0; i < pNumberOfBuffers; i++) {
             Pointer<Byte> lDefineBuffer = Pointer.allocateBytes(pImageSizeBytes);
-            handleErrorWithException("Cannot queue a buffer for camera: " + pAndorCamera.getHandle(), AtcoreLibrary.AT_QueueBuffer(pAndorCamera
-                    .getHandle(), lDefineBuffer, pImageSizeBytes));
+            handleErrorWithException("Cannot queue a buffer for camera: " + pAndorCamera.getHandle(),
+                    AtcoreLibrary.AT_QueueBuffer(pAndorCamera
+                            .getHandle(), lDefineBuffer, pImageSizeBytes));
         }
     }
 
-    public static void allocateAndQueueAlignedBuffers(AndorCamera pAndorCamera, int pImageSizeBytes, int pNumberOfBuffers, ArrayList<ImageBuffer>
-            BufferArray) throws AndorSdkJException {
-        getLogger().info("Allocating and queueing _" + pNumberOfBuffers + "_ alligned buffers for the camera " + pAndorCamera);
+    public static void allocateAndQueueAlignedBuffers(AndorCamera pAndorCamera, int pImageSizeBytes, int
+            pNumberOfBuffers, ArrayList<ImageBuffer>
+                                                              BufferArray) throws AndorSdkJException {
+        getLogger()
+                .info("Allocating and queueing _" + pNumberOfBuffers + "_ alligned buffers for the camera " +
+                        pAndorCamera);
 
         if (pNumberOfBuffers <= 0) {
             throw new AndorSdkJException("Number of buffers cannot be 0 or negative.");
@@ -130,7 +156,8 @@ public class AndorSDKJUtils {
         }
     }
 
-    public static void allocateAndQueueAlignedBuffer(AndorCamera pAndorCamera, int pImageSizeBytes, ArrayList<ImageBuffer> BufferArray) throws
+    public static void allocateAndQueueAlignedBuffer(AndorCamera pAndorCamera, int pImageSizeBytes,
+                                                     ArrayList<ImageBuffer> BufferArray) throws
             AndorSdkJException {
 
         getLogger().info("Allocating and queueing an aligned buffer for the camera " + pAndorCamera);
@@ -144,17 +171,21 @@ public class AndorSDKJUtils {
         }
 
         BufferArray.add(new ImageBuffer(lDefineBuffer, pImageSizeBytes));
-        handleErrorWithException("Cannot queue a buffer for camera: " + pAndorCamera.getHandle(), AtcoreLibrary.AT_QueueBuffer(pAndorCamera
-                .getHandle(), lDefineBuffer, pImageSizeBytes));
+        handleErrorWithException("Cannot queue a buffer for camera: " + pAndorCamera.getHandle(),
+                AtcoreLibrary.AT_QueueBuffer(pAndorCamera
+                        .getHandle(), lDefineBuffer, pImageSizeBytes));
     }
 
-    public static void queueBuffer(AndorCamera pAndorCamera, Pointer<Byte> pBuffer, int pImageSize) throws AndorSdkJException {
+    public static void queueBuffer(AndorCamera pAndorCamera, Pointer<Byte> pBuffer, int pImageSize) throws
+            AndorSdkJException {
         getLogger().info("Queueing a buffer for the camera " + pAndorCamera);
-        handleErrorWithException("Cannot queue a buffer for camera: " + pAndorCamera.getHandle(), AtcoreLibrary.AT_QueueBuffer(pAndorCamera
-                .getHandle(), pBuffer, pImageSize));
+        handleErrorWithException("Cannot queue a buffer for camera: " + pAndorCamera.getHandle(),
+                AtcoreLibrary.AT_QueueBuffer(pAndorCamera
+                        .getHandle(), pBuffer, pImageSize));
     }
 
-    //    public static Pointer<Byte> waitBuffer(AndorCamera pAndorCamera, long pTimeOut, TimeUnit pTimeUnit) throws AndorSdkJException {
+    //    public static Pointer<Byte> waitBuffer(AndorCamera pAndorCamera, long pTimeOut, TimeUnit pTimeUnit) throws
+    // AndorSdkJException {
     //
     //        if (mDebugMessages)
     //            System.out.println("Waiting a buffer for the camera " + pAndorCamera);
@@ -162,12 +193,15 @@ public class AndorSDKJUtils {
     //        Pointer<Pointer<Byte>> lBuffer = Pointer.allocatePointer(Byte.class);
     //        Pointer<Integer> lBufferSize = Pointer.allocateInt();
     //
-    //        handleErrorWithException("Error in waiting buffer for camera: " + pAndorCamera.getHandle(), AtcoreLibrary.AT_WaitBuffer(pAndorCamera
-    //                .getHandle(), lBuffer, lBufferSize, Math.toIntExact(TimeUnit.MILLISECONDS.convert(pTimeOut, pTimeUnit))));
+    //        handleErrorWithException("Error in waiting buffer for camera: " + pAndorCamera.getHandle(),
+    // AtcoreLibrary.AT_WaitBuffer(pAndorCamera
+    //                .getHandle(), lBuffer, lBufferSize, Math.toIntExact(TimeUnit.MILLISECONDS.convert(pTimeOut,
+    // pTimeUnit))));
     //        return lBuffer.get();
     //    }
 
-    public static ImageBuffer waitForBuffer(AndorCamera pAndorCamera, long pTimeOut, TimeUnit pTimeUnit) throws AndorSdkJException {
+    public static ImageBuffer waitForBuffer(AndorCamera pAndorCamera, long pTimeOut, TimeUnit pTimeUnit) throws
+            AndorSdkJException {
 
         getLogger().info("Waiting for and returning a buffer for the camera " + pAndorCamera);
 
@@ -175,8 +209,10 @@ public class AndorSDKJUtils {
         Pointer<Integer> lPointerBufferSize = Pointer.allocateInt();
 
         double t1 = System.nanoTime();
-        handleErrorWithException("Error in waiting buffer for camera: ", AtcoreLibrary.AT_WaitBuffer(pAndorCamera.getHandle(),
-                lPointerPointerBuffer, lPointerBufferSize, (int) TimeUnit.MILLISECONDS.convert(pTimeOut, pTimeUnit)));
+        handleErrorWithException("Error in waiting buffer for camera: ",
+                AtcoreLibrary.AT_WaitBuffer(pAndorCamera.getHandle(),
+                        lPointerPointerBuffer, lPointerBufferSize,
+                        (int) TimeUnit.MILLISECONDS.convert(pTimeOut, pTimeUnit)));
 
         double t2 = System.nanoTime();
 
@@ -184,8 +220,12 @@ public class AndorSDKJUtils {
 
         ImageBuffer lImageBuffer = new ImageBuffer(lPointerPointerBuffer.get(), lPointerBufferSize.get());
 
-        getLogger().info("Checking the ImageBuffer construction inside the wait-for-buffer method ---> " + "IB pointer: " + lImageBuffer.getPointer
-                () + " pointer VB: " + lImageBuffer.getPointer().getValidBytes() + " image size: " + lImageBuffer.getImageSizeInBytes());
+        getLogger()
+                .info("Checking the ImageBuffer construction inside the wait-for-buffer method ---> " + "IB pointer: " +
+                        "" + lImageBuffer
+                        .getPointer
+                                () + " pointer VB: " + lImageBuffer.getPointer()
+                        .getValidBytes() + " image size: " + lImageBuffer.getImageSizeInBytes());
 
         getLogger().info(" --- Done ---");
         return lImageBuffer;
@@ -208,8 +248,9 @@ public class AndorSDKJUtils {
         Pointer<Character> lFeatureName = Pointer.pointerToWideCString(pFeatureName);
         Pointer<Character> lFeatureValue = Pointer.allocateChars(10);
 
-        handleErrorWithException("Cannot get string for feature " + pFeatureName + " from camera " + pAndorCamera + ".", AtcoreLibrary.AT_GetString
-                (pAndorCamera.getHandle(), lFeatureName, lFeatureValue, 10));
+        handleErrorWithException("Cannot get string for feature " + pFeatureName + " from camera " + pAndorCamera + ".",
+                AtcoreLibrary.AT_GetString
+                        (pAndorCamera.getHandle(), lFeatureName, lFeatureValue, 10));
         return lFeatureValue.getWideCString();
     }
 
@@ -221,11 +262,13 @@ public class AndorSDKJUtils {
         Pointer<Character> lFeatureValueString = Pointer.allocateChars(10);
 
 
-        handleErrorWithException("Cannot get enum index for camera " + pAndorCamera, AtcoreLibrary.AT_GetEnumIndex(pAndorCamera.getHandle(),
-                lFeatureName, lFeatureValue));
+        handleErrorWithException("Cannot get enum index for camera " + pAndorCamera,
+                AtcoreLibrary.AT_GetEnumIndex(pAndorCamera.getHandle(),
+                        lFeatureName, lFeatureValue));
 
-        handleErrorWithException("getting get enum value for camera " + pAndorCamera, AtcoreLibrary.AT_GetEnumStringByIndex(pAndorCamera.getHandle
-                (), lFeatureName, lFeatureValue.get().intValue(), lFeatureValueString, 10));
+        handleErrorWithException("getting get enum value for camera " + pAndorCamera,
+                AtcoreLibrary.AT_GetEnumStringByIndex(pAndorCamera.getHandle
+                        (), lFeatureName, lFeatureValue.get().intValue(), lFeatureValueString, 10));
         return lFeatureValueString.getWideCString();
     }
 

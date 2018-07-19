@@ -17,7 +17,7 @@ public class AndorSdkJ implements AutoCloseable
 
 	public long getNumberOfCameras() throws AndorSdkJException
 	{
-		return AndorSDKJUtils.getLong("Device Count");
+		return AndorSDKJUtils.getInt("Device Count");
 	}
 
 	public AndorCamera openCamera(int pCameraIndex) throws AndorSdkJException

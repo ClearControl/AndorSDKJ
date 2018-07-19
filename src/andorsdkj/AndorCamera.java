@@ -2,6 +2,7 @@ package andorsdkj;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 import org.bridj.Pointer;
 
@@ -265,11 +266,14 @@ public class AndorCamera implements AutoCloseable {
 	
 	public void setDebugMessagesOn(boolean pFlag) {
 		mDebugMessages = pFlag;
-		AndorSDKJUtils.setDebugMessages(pFlag);
+		if (mDebugMessages)
+			AndorSDKJUtils.getLogger().setLevel(Level.ALL);
+		else
+			AndorSDKJUtils.getLogger().setLevel(Level.OFF);
 	}
 
 	public String getReadOutRate() throws AndorSdkJException{
 //	    return AndorSDKJUtils.getString(this, "PixelReadoutRate", 2, TimeUnit.SECONDS);
-        return AndorSDKJUtils.getEnumeratedString(this, "PixelReadoutRate", 2, TimeUnit.SECONDS);
+        return AndorSDKJUtils.getEnumeratedString(this, "PixelReadoutRate");
     }
 }

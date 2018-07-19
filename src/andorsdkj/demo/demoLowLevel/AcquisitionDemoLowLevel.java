@@ -46,7 +46,7 @@ public class AcquisitionDemoLowLevel {
 			iNumberDevices.setLong(15);
 
 			// System.out.println("inumdev is " + iNumberDevices);
-			// System.out.println("the value is " + iNumberDevices.getLong());
+			// System.out.println("the value is " + iNumberDevices.getInt());
 			long tr;
 
 			String s = "Device Count";
