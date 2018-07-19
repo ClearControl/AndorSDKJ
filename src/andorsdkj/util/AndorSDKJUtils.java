@@ -283,7 +283,7 @@ public class AndorSDKJUtils {
                 @Override
                 public String format(LogRecord record) {
                     String[] str = record.getSourceClassName().split("\\.");
-                    return "[" + str[str.length - 1] + "]: " + record.getMessage();
+                    return "[" + str[str.length - 1] + "]: " + record.getMessage()+"\n";
                 }
             };
 
