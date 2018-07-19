@@ -47,7 +47,8 @@ public class AndorSDKJUtils {
         // Is is necessary to return the pointer? Or the user should provide a
         // pointer to store the value in?
         if (mDebugMessages)
-            System.out.println("Getting an integer value from the camera: " + pAndorCamera + " for the feature " + string);
+            System.out.println(
+                    "Getting an integer value from the camera: " + pAndorCamera + " for the feature " + string);
 
         Pointer<Long> lStorePointer = Pointer.allocateLong();
         Pointer<Character> lFeatureName =
@@ -62,11 +63,31 @@ public class AndorSDKJUtils {
 
     }
 
+    public static double getFloat(AndorCamera pAndorCamera,
+                                  String string) throws AndorSdkJException {
+        if (mDebugMessages)
+            System.out.println("Getting a float value from the camera: " + pAndorCamera + " for the feature " + string);
+
+        Pointer<Double> lStorePointer = Pointer.allocateDouble();
+        Pointer<Character> lFeatureName =
+                Pointer.pointerToWideCString(string);
+        handleErrorWithException("Cannot get float value for the following feature: "
+                        + string,
+                AtcoreLibrary.AT_GetFloat(pAndorCamera.getHandle(),
+                        lFeatureName,
+                        lStorePointer));
+
+        return lStorePointer.getInt();
+
+    }
+
     public static void setFloat(AndorCamera pAndorCamera,
                                 String pKey,
                                 float pValue) throws AndorSdkJException {
         if (mDebugMessages)
-            System.out.println("Setting a float value: " + pValue + " for the camera: " + pAndorCamera + " for the feature " + pKey);
+            System.out.println(
+                    "Setting a float value: " + pValue + " for the camera: " + pAndorCamera + " for the feature " +
+                            pKey);
 
         Pointer<Character> lKeyPointer = Pointer.pointerToWideCString(pKey);
         handleErrorWithException("Cannot set float value for " + pKey,
@@ -80,7 +101,9 @@ public class AndorSDKJUtils {
                                String pKey,
                                boolean pValue) throws AndorSdkJException {
         if (mDebugMessages)
-            System.out.println("Setting a boolean feature: " + pKey + " to the value: " + pValue + " for the camera: " + pAndorCamera);
+            System.out.println(
+                    "Setting a boolean feature: " + pKey + " to the value: " + pValue + " for the camera: " +
+                            pAndorCamera);
 
         Pointer<Character> lKeyPointer = Pointer.pointerToWideCString(pKey);
         handleErrorWithException("Cannot set boolean value for " + pKey,
@@ -110,7 +133,9 @@ public class AndorSDKJUtils {
                               String pKey,
                               int pValue) throws AndorSdkJException {
         if (mDebugMessages)
-            System.out.println("Setting an int value: " + pValue + " for the camera: " + pAndorCamera + " for the feature " + pKey);
+            System.out.println(
+                    "Setting an int value: " + pValue + " for the camera: " + pAndorCamera + " for the feature " +
+                            pKey);
 
         Pointer<Character> lKeyPointer = Pointer.pointerToWideCString(pKey);
         handleErrorWithException("Cannot set int value for " + pKey,
@@ -126,7 +151,8 @@ public class AndorSDKJUtils {
 
 
         if (mDebugMessages)
-            System.out.println("Setting a feature: " + pKey + " for the camera: " + pAndorCamera + " to value " + pValue);
+            System.out
+                    .println("Setting a feature: " + pKey + " for the camera: " + pAndorCamera + " to value " + pValue);
 
         Pointer<Character> lKey = Pointer.pointerToWideCString(pKey);
         Pointer<Character> lValue = Pointer.pointerToWideCString(pValue);
@@ -160,7 +186,8 @@ public class AndorSDKJUtils {
                                                int pImageSizeBytes,
                                                int pNumberOfBuffers) throws AndorSdkJException {
         if (mDebugMessages)
-            System.out.println("Allocating and queueing _" + pNumberOfBuffers + "_ buffers for the camera " + pAndorCamera);
+            System.out.println(
+                    "Allocating and queueing _" + pNumberOfBuffers + "_ buffers for the camera " + pAndorCamera);
 
         if (pNumberOfBuffers <= 0) {
             throw new AndorSdkJException("Number of buffers cannot be negative.");
@@ -179,9 +206,11 @@ public class AndorSDKJUtils {
 
     public static void allocateAndQueueAlignedBuffers(AndorCamera pAndorCamera,
                                                       int pImageSizeBytes,
-                                                      int pNumberOfBuffers, ArrayList<ImageBuffer> BufferArray) throws AndorSdkJException {
+                                                      int pNumberOfBuffers, ArrayList<ImageBuffer> BufferArray)
+            throws AndorSdkJException {
         if (mDebugMessages)
-            System.out.println("Allocating and queueing _" + pNumberOfBuffers + "_ buffers for the camera " + pAndorCamera);
+            System.out.println(
+                    "Allocating and queueing _" + pNumberOfBuffers + "_ buffers for the camera " + pAndorCamera);
 
         if (pNumberOfBuffers <= 0) {
             throw new AndorSdkJException("Number of buffers cannot be negative.");
@@ -197,7 +226,8 @@ public class AndorSDKJUtils {
 
 
     public static void allocateAndQueueAlignedBuffer(AndorCamera pAndorCamera,
-                                                     int pImageSizeBytes, ArrayList<ImageBuffer> BufferArray) throws AndorSdkJException {
+                                                     int pImageSizeBytes, ArrayList<ImageBuffer> BufferArray) throws
+            AndorSdkJException {
 
         if (mDebugMessages)
             System.out.println("Allocating and queueing an aligned buffer for the camera " + pAndorCamera);
@@ -260,13 +290,11 @@ public class AndorSDKJUtils {
                                             TimeUnit pTimeUnit) throws AndorSdkJException {
 
         if (mDebugMessages)
-            System.out.println("waiting for and returning a buffer for the camera " + pAndorCamera);
+            System.out.println("[AndorSDKJUtils]: waiting for and returning a buffer for the camera " + pAndorCamera);
 
         Pointer<Pointer<Byte>> lPointerPointerBuffer = Pointer.allocatePointer(Byte.class);
         Pointer<Integer> lPointerBufferSize = Pointer.allocateInt();
 
-        if (mDebugMessages)
-            System.out.println("allocated pointers");
         double t1 = System.nanoTime();
         handleErrorWithException("Error in waiting buffer for camera: ",
                 AtcoreLibrary.AT_WaitBuffer(pAndorCamera.getHandle(),
@@ -278,18 +306,24 @@ public class AndorSDKJUtils {
         double t2 = System.nanoTime();
 
         if (mDebugMessages)
-            System.out.println(String.format("buffer acquired in %.2f ms, proceeding to IB construction", (t2 - t1) * 1e-6));
+            System.out.println(
+                    String.format("[AndorSDKJUtils]: buffer acquired in %.2f ms, proceeding to IB construction", (t2
+                            - t1) * 1e-6));
 
         ImageBuffer lImageBuffer = new ImageBuffer(lPointerPointerBuffer.get(),
                 lPointerBufferSize.get());
 
         if (mDebugMessages)
-            System.out.println("checking the ImageBuffer construction inside the wait-for-buffer method ---> IB pointer: " + lImageBuffer.getPointer() + " pointer VB: " + lImageBuffer.getPointer().getValidBytes() + " image size: " + lImageBuffer.getImageSizeInBytes());
+            System.out.println(
+                    "[AndorSDKJUtils]: checking the ImageBuffer construction inside the wait-for-buffer method ---> " +
+                            "IB pointer: " + lImageBuffer.getPointer() + " pointer VB: " + lImageBuffer.getPointer()
+                            .getValidBytes() + " image size: " + lImageBuffer.getImageSizeInBytes());
 
 
         lPointerPointerBuffer.release();
         lPointerBufferSize.release();
 
+        System.out.println("[AndorSDKJUtils]: --- Done ---");
         return lImageBuffer;
     }
 
@@ -309,6 +343,40 @@ public class AndorSDKJUtils {
 
     public static void setDebugMessages(boolean pFlag) {
         mDebugMessages = pFlag;
+    }
+
+    public static String getString(AndorCamera pAndorCamera, String pFeatureName, long pTimeOut, TimeUnit pTimeUnit)
+            throws
+            AndorSdkJException {
+        if (mDebugMessages) {
+            System.out.println("[AndorSDKJUtils]: getEnumString function for camera " + pAndorCamera);
+        }
+
+        Pointer<Character> lFeatureName = Pointer.pointerToWideCString(pFeatureName);
+        Pointer<Character> lFeatureValue = Pointer.allocateChars(10);
+
+        handleErrorWithException("Error in retrieveing enumIndex", AtcoreLibrary.AT_GetString(pAndorCamera
+                .getHandle(), lFeatureName, lFeatureValue, 10));
+        return lFeatureValue.getWideCString();
+    }
+
+    public static String getEnumString(AndorCamera pAndorCamera, String pFeatureName, long pTimeOut, TimeUnit pTimeUnit)
+            throws AndorSdkJException {
+        if (mDebugMessages) {
+            System.out.println("[AndorSDKJUtils]: getEnumString function for camera " + pAndorCamera);
+        }
+
+        Pointer<Character> lFeatureName = Pointer.pointerToWideCString(pFeatureName);
+        Pointer<Integer> lFeatureValue = Pointer.allocateInt();
+        Pointer<Character> lFeatureValueString = Pointer.allocateChars(10);
+
+
+        handleErrorWithException("getting enum index", AtcoreLibrary.AT_GetEnumIndex(pAndorCamera.getHandle(),
+                lFeatureName, lFeatureValue));
+
+        handleErrorWithException("getting enum value", AtcoreLibrary.AT_GetEnumStringByIndex(pAndorCamera.getHandle()
+                , lFeatureName, lFeatureValue.get().intValue(), lFeatureValueString, 10));
+        return lFeatureValueString.getWideCString();
     }
 
 }

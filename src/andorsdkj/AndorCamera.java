@@ -30,6 +30,11 @@ public class AndorCamera implements AutoCloseable {
 		AndorSDKJUtils.handleErrorWithException("Flushing in construction", AtcoreLibrary.AT_Flush(mCameraHandlePointer.getInt()));
 	}
 
+
+	public void open() throws AndorSdkJException{
+		AndorSDKJUtils.handleErrorWithException("Cannot open camera for index " + mCameraIndex,
+				AtcoreLibrary.AT_Open(mCameraIndex, mCameraHandlePointer));
+	}
 	@Override
 	public void close() throws Exception {
 
@@ -253,9 +258,18 @@ public class AndorCamera implements AutoCloseable {
 	public boolean getOverlapReadoutMode() throws AndorSdkJException{
 		return AndorSDKJUtils.getBool(this, "Overlap");
 	}
+
+	public double getExternalTriggerDelay()throws AndorSdkJException{
+		return AndorSDKJUtils.getFloat(this,"ExternalTriggerDelay");
+	}
 	
 	public void setDebugMessagesOn(boolean pFlag) {
 		mDebugMessages = pFlag;
 		AndorSDKJUtils.setDebugMessages(pFlag);
 	}
+
+	public String getReadOutRate() throws AndorSdkJException{
+//	    return AndorSDKJUtils.getString(this, "PixelReadoutRate", 2, TimeUnit.SECONDS);
+        return AndorSDKJUtils.getEnumString(this, "PixelReadoutRate", 2, TimeUnit.SECONDS);
+    }
 }
