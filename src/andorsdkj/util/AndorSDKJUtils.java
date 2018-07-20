@@ -12,7 +12,6 @@ import andorsdkj.ImageBuffer;
 import andorsdkj.bindings.AtcoreLibrary;
 
 public class AndorSDKJUtils {
-    public static boolean mDebugMessages = true;
 
     public static long getInt(String pKey) throws AndorSdkJException {
 
