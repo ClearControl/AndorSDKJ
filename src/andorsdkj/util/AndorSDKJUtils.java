@@ -1,6 +1,5 @@
 package andorsdkj.util;
 
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.*;
@@ -278,7 +277,9 @@ public class AndorSDKJUtils {
         if (mLogger == null) {
             mLogger = Logger.getLogger("AndorLogger");
             mLogger.setUseParentHandlers(false);
-            Handler lHandler = new MyStreamHandler();
+            mLogger.setLevel(Level.ALL);
+            Handler lHandler = new MyHandler();
+//            Handler lHandler = new ConsoleHandler();
             Formatter lFormatter = new Formatter() {
                 @Override
                 public String format(LogRecord record) {
@@ -290,8 +291,33 @@ public class AndorSDKJUtils {
             lHandler.setFormatter(lFormatter);
 //            lHandler.
             mLogger.addHandler(lHandler);
+
+//            new ConsoleHandler()
         }
         return mLogger;
+    }
+
+    public static void setLogger(Logger pLogger){
+        mLogger = pLogger;
+
+
+
+        mLogger.setUseParentHandlers(false);
+        mLogger.setLevel(Level.ALL);
+        Handler lHandler = new MyHandler();
+
+//            Handler lHandler = new ConsoleHandler();
+        Formatter lFormatter = new Formatter() {
+            @Override
+            public String format(LogRecord record) {
+                String[] str = record.getSourceClassName().split("\\.");
+                return "[" + str[str.length - 1] + "]: " + record.getMessage()+"\n";
+            }
+        };
+
+        lHandler.setFormatter(lFormatter);
+//            lHandler.
+        mLogger.addHandler(lHandler);
     }
 
 
