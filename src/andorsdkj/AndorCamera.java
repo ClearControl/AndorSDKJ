@@ -40,7 +40,7 @@ public class AndorCamera implements AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() throws AndorSdkJException {
         getLogger().info("Emptying buffers and closing the Andor camera with index: " + this.mCameraIndex);
 
         this.flushBuffers();
